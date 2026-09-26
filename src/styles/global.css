@@ -54,8 +54,8 @@
   .btn-line:hover { opacity: 1; background: rgba(127,127,127,0.08); }
 
   .dotgrid {
-    background-image: radial-gradient(rgba(240,240,248,0.13) 1px, transparent 1.2px);
-    background-size: 22px 22px;
+    background-image: radial-gradient(rgba(240,240,248,0.085) 1px, transparent 1.3px);
+    background-size: 26px 26px;
   }
   .dotgrid-dark {
     background-image: radial-gradient(rgba(23,23,23,0.12) 1px, transparent 1.2px);

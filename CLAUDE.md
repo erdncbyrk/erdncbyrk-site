@@ -6,7 +6,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 ## Teknoloji
 - Astro 7 (statik çıktı, `dist/`), Tailwind CSS v4 (`@tailwindcss/vite`), `@astrojs/sitemap`
 - Fontlar npm'den self-host: Geist Mono Variable (başlıklar, 800), JetBrains Mono Variable (gövde). Tüm site monospace.
-- Hareket: GSAP 3 + ScrollTrigger, Lenis ve iki canvas (tel kafes küre, parçacık bulutu); hepsi `src/scripts/motion.ts` içinde. Framework (React vb.) eklenmeyecek.
+- Hareket: GSAP 3 + ScrollTrigger, Lenis ve iki canvas: noktalı dünya (`src/scripts/globe.ts`, kara noktaları `src/data/land-points.json`, üretmek için `node scripts/land-points.mjs`) ve parçacık bulutu; bağlantılar `src/scripts/motion.ts` içinde. Framework (React vb.) eklenmeyecek.
 - Tasarım referansı: weevolveit.com (monospace, kömür/kırık beyaz bölümler, fuşya vurgu). Önceki Orchid referanslı sürüm `yon-orchid` dalında.
 
 ## Komutlar

@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { createGlobe } from './globe';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,75 +47,10 @@ window.addEventListener('pointermove', (e) => {
   mouse.ny = e.clientY / window.innerHeight - 0.5;
 });
 
-/* ---------- Wireframe globe ---------- */
+/* ---------- Dotted-earth globe ---------- */
 const globe = document.querySelector<HTMLCanvasElement>('[data-globe]');
 if (globe) {
-  let g = fit(globe);
-  window.addEventListener('resize', () => (g = fit(globe)));
-  const LAT = 11, LON = 18, SEG = 72;
-  const lines: [number, number, number][][] = [];
-  for (let i = 1; i < LAT; i++) {
-    const phi = (i / LAT) * Math.PI;
-    lines.push(Array.from({ length: SEG + 1 }, (_, k) => {
-      const th = (k / SEG) * Math.PI * 2;
-      return [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)] as [number, number, number];
-    }));
-  }
-  for (let j = 0; j < LON; j++) {
-    const th = (j / LON) * Math.PI;
-    lines.push(Array.from({ length: SEG + 1 }, (_, k) => {
-      const phi = (k / SEG) * Math.PI * 2;
-      return [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)] as [number, number, number];
-    }));
-  }
-  // a handful of pink "cities"
-  const cities = Array.from({ length: 9 }, (_, i) => {
-    const phi = 0.9 + (i % 3) * 0.45, th = i * 0.75;
-    return [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)] as [number, number, number];
-  });
-  let tiltX = 0.38, tiltY = 0;
-  const draw = (t: number) => {
-    const { ctx, w, h } = g;
-    ctx.clearRect(0, 0, w, h);
-    const R = Math.min(w, h) * 0.46;
-    const cx = w / 2, cy = h / 2;
-    tiltX += (0.38 + mouse.ny * 0.5 - tiltX) * 0.04;
-    tiltY += (mouse.nx * 0.8 - tiltY) * 0.04;
-    const rot = t * 0.00012 + tiltY;
-    const cr = Math.cos(rot), sr = Math.sin(rot), ct = Math.cos(tiltX), st = Math.sin(tiltX);
-    const project = ([x, y, z]: [number, number, number]) => {
-      const x1 = x * cr + z * sr, z1 = -x * sr + z * cr;
-      const y2 = y * ct - z1 * st, z2 = y * st + z1 * ct;
-      const s = 2.6 / (2.6 + z2);
-      return [cx + x1 * R * s, cy + y2 * R * s, z2] as const;
-    };
-    ctx.lineWidth = 1;
-    for (const line of lines) {
-      let prev = project(line[0]);
-      for (let k = 1; k < line.length; k++) {
-        const p = project(line[k]);
-        const depth = (prev[2] + p[2]) / 2; // -1 front … 1 back
-        ctx.strokeStyle = `rgba(240,240,248,${0.05 + (1 - (depth + 1) / 2) * 0.28})`;
-        ctx.beginPath();
-        ctx.moveTo(prev[0], prev[1]);
-        ctx.lineTo(p[0], p[1]);
-        ctx.stroke();
-        prev = p;
-      }
-    }
-    for (const c of cities) {
-      const p = project(c);
-      if (p[2] > 0.1) continue; // only the visible hemisphere
-      ctx.fillStyle = 'rgba(228,0,124,0.95)';
-      ctx.beginPath();
-      ctx.arc(p[0], p[1], 2.4, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = `rgba(228,0,124,${0.25 + 0.2 * Math.sin(t * 0.003 + c[0] * 5)})`;
-      ctx.beginPath();
-      ctx.arc(p[0], p[1], 7 + 3 * Math.sin(t * 0.003 + c[1] * 5), 0, Math.PI * 2);
-      ctx.stroke();
-    }
-  };
+  const draw = createGlobe(globe, document.querySelector<HTMLElement>('[data-globe-label]'), mouse);
   io.observe(globe);
   visible.set(globe, true);
   loops.push({ draw, canvas: globe });
