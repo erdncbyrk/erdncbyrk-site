@@ -46,6 +46,18 @@ const jsonLd = {
     <script is:inline>document.documentElement.classList.add('js', matchMedia('(prefers-reduced-motion: reduce)').matches ? 'motion-off' : 'motion-on');</script>
   </head>
   <body class="overflow-x-clip">
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none">
+      <defs>
+        <!-- ragged ink edge for section wipes: warp the shape with noise, then re-threshold its alpha -->
+        <filter id="ink-edge" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.014 0.019" numOctaves="3" seed="11" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="220" xChannelSelector="R" yChannelSelector="G" result="warped" />
+          <feGaussianBlur in="warped" stdDeviation="1.8" result="soft" />
+          <feComponentTransfer in="soft" result="cut"><feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1 1 1" /></feComponentTransfer>
+          <feGaussianBlur in="cut" stdDeviation="0.4" />
+        </filter>
+      </defs>
+    </svg>
     <slot />
     <script>
       import '../scripts/motion';

@@ -91,3 +91,6 @@
   .marquee { animation: none; }
   .caret::after { animation: none; }
 }
+
+/* ink wipes only run with motion; otherwise sections meet with a plain edge */
+html:not(.motion-on) [data-splash] { display: none; }

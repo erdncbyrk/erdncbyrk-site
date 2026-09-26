@@ -1,9 +1,14 @@
 ---
-// Organic ink-splash edge between a dark and a light section (see src/scripts/splash.ts).
-const { from = '#171717', to = '#F6F6F8', height = 'h-[160px] md:h-[240px]' } = Astro.props;
+// Ink wipe into the next section. Zero-height marker placed between two sections;
+// its overlay covers the last screen of the section above, and as you scroll the
+// `to` colour floods up from the bottom through the #ink-edge SVG filter
+// (defined once in Base.astro). Driven by ScrollTrigger in motion.ts.
+const { to = '#F6F6F8' } = Astro.props;
 ---
-<div data-splash data-to={to} class={`relative -my-px w-full overflow-hidden ${height}`} style={`background:${from}`} aria-hidden="true">
-  <canvas class="absolute inset-0 h-full w-full"></canvas>
-  <!-- without JS: a plain half-and-half band -->
-  <noscript><div class="absolute inset-x-0 bottom-0 h-1/2" style={`background:${to}`}></div></noscript>
+<div data-splash class="relative h-0 w-full" aria-hidden="true">
+  <div data-splash-clip class="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-[100vh] overflow-hidden">
+    <div class="absolute -inset-[300px] will-change-transform" style="filter:url(#ink-edge)">
+      <div data-splash-fill class="absolute inset-0 will-change-transform" style={`background:${to};transform-origin:50% 100%;transform:scale(1,0)`}></div>
+    </div>
+  </div>
 </div>

@@ -3,7 +3,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { createGlobe } from './globe';
 import { initRipples } from './ripple';
-import { initSplashes } from './splash';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +11,6 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 initRipples(reduce);
-initSplashes(reduce);
 
 /* ---------- Nav state + scroll percentage (no motion involved) ---------- */
 const nav = document.querySelector<HTMLElement>('[data-nav]');
@@ -275,6 +273,26 @@ if (reduce) {
       });
     });
   }
+
+  // ink wipes between sections: the next section's colour floods up over the last screen
+  gsap.utils.toArray<HTMLElement>('[data-splash]').forEach((el) => {
+    const clip = el.querySelector('[data-splash-clip]')!;
+    gsap.fromTo(
+      el.querySelector('[data-splash-fill]'),
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: clip,
+          start: 'top 25%',
+          // 1.5 screens of scroll; the last wipe ends where the page does
+          end: (self: ScrollTrigger) => Math.min(ScrollTrigger.maxScroll(window), self.start + window.innerHeight * 1.5),
+          scrub: 0.3,
+        },
+      },
+    );
+  });
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
 }
