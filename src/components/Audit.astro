@@ -1,0 +1,63 @@
+---
+import { frictions } from '../data/site';
+---
+<section id="teshis" class="dotgrid relative scroll-mt-20 px-4 py-28 md:py-40">
+  <div class="mx-auto flex max-w-[1000px] flex-col items-center text-center">
+    <span class="label">[ Teşhis ]</span>
+    <h2 data-scramble class="display mt-6 text-[clamp(38px,6.2vw,84px)]">Sizi ne yavaşlatıyor?</h2>
+    <p class="mt-6 min-h-[1.6em] text-sm text-paper/70 md:text-base"><span data-type="Sorunu siz seçin. Çözümü ben yazayım.">Sorunu siz seçin. Çözümü ben yazayım.</span></p>
+  </div>
+
+  <div data-audit class="mx-auto mt-14 grid max-w-[1000px] gap-6 lg:grid-cols-[1fr_1.1fr]">
+    <div class="flex flex-wrap content-start gap-2.5" role="group" aria-label="Sorunlar">
+      {frictions.map((f, i) => (
+        <button type="button" data-q={i} aria-pressed={i === 0 ? 'true' : 'false'} class="rounded-full border border-white/15 px-4 py-2.5 text-left text-[13px] text-paper/75 transition-colors hover:border-white/40 hover:text-paper aria-pressed:border-pink aria-pressed:bg-pink/10 aria-pressed:text-paper">
+          {f.q}
+        </button>
+      ))}
+    </div>
+    <div class="rounded-2xl border border-white/10 bg-coal-2">
+      <div class="flex items-center gap-2 border-b border-white/10 px-4 py-3" aria-hidden="true">
+        <i class="size-2.5 rounded-full bg-white/15"></i><i class="size-2.5 rounded-full bg-white/15"></i><i class="size-2.5 rounded-full bg-white/15"></i>
+        <span class="ml-3 text-[11px] text-paper/40">teshis.txt</span>
+      </div>
+      <div class="min-h-[190px] p-5 text-[14px] leading-relaxed" aria-live="polite">
+        <p class="text-paper/45">&gt; <span data-audit-q>{frictions[0].q}</span></p>
+        <p class="mt-3 text-paper"><span class="text-pink">✓</span> <span data-audit-a class="caret">{frictions[0].a}</span></p>
+      </div>
+    </div>
+  </div>
+  <script type="application/json" data-audit-data set:html={JSON.stringify(frictions)} />
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-audit]');
+  const dataEl = document.querySelector('[data-audit-data]');
+  if (root && dataEl) {
+    const items: { q: string; a: string }[] = JSON.parse(dataEl.textContent || '[]');
+    const qEl = root.querySelector<HTMLElement>('[data-audit-q]')!;
+    const aEl = root.querySelector<HTMLElement>('[data-audit-a]')!;
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-q]')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let typing: number | undefined;
+    const type = (text: string) => {
+      window.clearInterval(typing);
+      if (reduce) { aEl.textContent = text; return; }
+      let i = 0;
+      aEl.textContent = '';
+      typing = window.setInterval(() => {
+        i += 2;
+        aEl.textContent = text.slice(0, i);
+        if (i >= text.length) window.clearInterval(typing);
+      }, 18);
+    };
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        const item = items[Number(b.dataset.q)];
+        buttons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        qEl.textContent = item.q;
+        type(item.a);
+      }),
+    );
+  }
+</script>

@@ -5,9 +5,9 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 
 ## Teknoloji
 - Astro 7 (statik çıktı, `dist/`), Tailwind CSS v4 (`@tailwindcss/vite`), `@astrojs/sitemap`
-- Fontlar npm'den self-host: Geist Variable (gövde), Geist Mono Variable (etiket/rakam), Instrument Serif (italik vurgular)
-- Hareket: GSAP 3 + ScrollTrigger ve Lenis (yumuşak kaydırma), hepsi `src/scripts/motion.ts` içinde. Framework (React vb.) eklenmeyecek.
-- `Base.astro` içinde ayrıca `.reveal` için IntersectionObserver yedeği, film grenli katman (`.grain`) ve imleç ışığı (`[data-cursor]`) var.
+- Fontlar npm'den self-host: Geist Mono Variable (başlıklar, 800), JetBrains Mono Variable (gövde). Tüm site monospace.
+- Hareket: GSAP 3 + ScrollTrigger, Lenis ve iki canvas (tel kafes küre, parçacık bulutu); hepsi `src/scripts/motion.ts` içinde. Framework (React vb.) eklenmeyecek.
+- Tasarım referansı: weevolveit.com (monospace, kömür/kırık beyaz bölümler, fuşya vurgu). Önceki Orchid referanslı sürüm `yon-orchid` dalında.
 
 ## Komutlar
 - `npm run dev` → http://localhost:4321
@@ -15,20 +15,18 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 - `npm run preview`
 
 ## Yapı
-- `src/data/site.ts` — TÜM içerik (fiyatlar, paketler, SSS, süreç, iletişim). Metin değişiklikleri önce buradan.
-- `src/styles/global.css` — renk/font token'ları (`@theme`), `.silk`, `.accent`, `.glass`, `.card`, `.btn-silk`, `.btn-ghost`, `.reveal`, animasyonlar.
-- `src/layouts/Base.astro` — head, SEO meta, JSON-LD (ProfessionalService + FAQPage), reveal yedeği, motion.ts yüklemesi.
-- `src/scripts/motion.ts` — tüm animasyonlar. HTML'deki data özniteliklerine bağlanır:
-  `data-hero-title` / `data-hero-fade` (açılış), `data-stage`, `data-stage-tilt`, `data-stage-inner`, `data-fan`, `data-chip`, `data-float`, `data-ring` (3B vitrin),
-  `data-split` (başlık kelime animasyonu), `data-stagger` (kart grubu girişleri), `data-tilt="derece"` + `.spot` (fareyle 3B eğim + ışık),
-  `data-magnetic` (mıknatıs buton), `data-bars`/`data-bar`, `data-steps`/`data-line`, `data-parallax="hız"`, `data-wordmark`, `data-nav`.
-- `src/components/` — Nav, Hero (perspektif vitrin), Marquee, Bento, Work (sektör örnekleri), Packages, Process, About, Faq, Footer (CTA + alt bilgi).
+- `src/data/site.ts` — TÜM içerik (bilgi şeridi, sektörler, yöntem adımları, teşhis soruları, paketler, SSS, iletişim). Metin değişiklikleri önce buradan.
+- `src/styles/global.css` — token'lar (`@theme`: coal, snow, paper, pink), `.display`, `.label`, `.btn-pink`, `.btn-line`, `.dotgrid`, `.marquee`, `.caret`.
+- `src/layouts/Base.astro` — head, SEO meta, JSON-LD, `<head>` içinde `motion-on`/`motion-off` sınıfı, motion.ts yüklemesi.
+- `src/components/` — Nav (hap menü + sağda kaydırma yüzdesi), Hero (küre + bilgi şeridi + sektör kayan yazısı), Method (parçacıklı giriş + yatay kayan 4 adım), Audit (sorun seç → çözüm yazılsın), Packages, About, Faq, Footer (CTA halkası + alt bilgi).
+- `src/scripts/motion.ts` data öznitelikleri: `data-globe`, `data-particles` (`data-variant="ring"`), `data-hero-line`, `data-scramble` (başlık harf karıştırma), `data-type` (yazılan satır), `data-fade`, `data-hscroll`/`-pin`/`-track`, `data-step-dot`, `data-progress`/`-bar`, `data-nav`.
 
 ## Tasarım kuralları
-- Zemin `ink #0A0C0B`; vurgu "ipek" şampanya-altın (`silk`, `silk-deep`, `gold`); ikincil `mint` (başarı/yayında), `bursa` yeşili ışık hüzmelerinde.
-- Başlıklar Geist 500, sıkı harf aralığı; vurgu kelimeler `<span class="accent">` veya `<span class="silk">` (serif italik).
-- Animasyonlar `prefers-reduced-motion` ile kapanır (`motion-off` sınıfı, sayfa statik ama eksiksiz görünür); `.reveal` JS yoksa görünür kalır. Bunu bozma.
-- `.nav-pill` gibi Tailwind yardımcı sınıflarını ezmesi gereken kurallar `@layer` dışında yazılır.
+- Koyu bölümler `coal #171717` + `paper #F0F0F8`; açık bölümler `snow #F6F6F8` + `coal`. Tek vurgu `pink #E4007C`, başlık sonundaki nokta `<span class="dot">.</span>`.
+- Bölüm etiketleri `[ ETİKET ]` biçiminde `.label`. Başlıklar `.display` (Geist Mono 800, sıkı).
+- Uydurma istatistik, müşteri yorumu veya logo KULLANILMAZ. Sadece gerçek bilgiler (2018'den beri, 7 gün, sabit fiyat).
+- Animasyonlar `prefers-reduced-motion` ile kapanır: yatay kaydırma dikey listeye döner, canvas'lar tek kare çizilir. Bunu bozma.
+- Tailwind yardımcılarını ezmesi gereken kurallar `@layer` dışında yazılır.
 - Mobilde yatay kaydırma olmamalı (390px'de kontrol et).
 
 ## Yapılacaklar (sırayla)
@@ -37,7 +35,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 3. `public/cv.pdf` ekle.
 4. Sipariş formu: Tally veya benzeri bir form kur, bağlantısını `site.orderFormUrl`'e yaz.
 5. `/kvkk` sayfası (KVKK aydınlatma metni) oluştur.
-6. Sektör demo siteleri: `tadilat-demo.erdncbyrk.com` vb.; `Work.astro` kartlarındaki `href="#"` bunlara bağlanacak.
+6. `site.whatsappUrl` içine gerçek numarayı yaz. Sektör demo siteleri (`tadilat-demo.erdncbyrk.com` vb.) hazır olunca ana sayfaya bir çalışmalar bölümü eklenecek.
 7. OG görseli (`public/og.png`, 1200×630) ve `og:image` meta etiketi.
 8. Yayın: Cloudflare Pages (build: `npm run build`, çıktı: `dist`), erdncbyrk.com alan adını bağla.
 9. Yayından sonra PageSpeed Insights ile mobil 95+ doğrula.

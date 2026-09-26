@@ -1,76 +1,41 @@
 ---
-import Arrow from './Arrow.astro';
-import { site } from '../data/site';
+import { site, facts, sectors } from '../data/site';
+const row = [...sectors, ...sectors];
 ---
-<section class="relative px-4 pt-16 text-center md:pt-20">
-  <div class="mx-auto flex max-w-[1100px] flex-col items-center gap-7">
-    <span data-hero-fade class="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] py-2 pl-2.5 pr-4 text-[13px] text-soft">
-      <span class="size-2 rounded-full bg-mint shadow-[0_0_0_4px_rgba(127,209,168,0.18)]"></span>
-      Yeni projeler kabul ediliyor · Bursa ve tüm Türkiye
-    </span>
-    <h1 data-hero-title class="text-[clamp(44px,8vw,108px)] font-medium leading-[0.98] tracking-[-0.045em]">
-      Küçük işletmeler için <span class="silk">büyük görünen</span> web siteleri.
+<section class="dotgrid relative overflow-hidden px-4 pb-16 pt-28 md:pt-24">
+  <!-- wireframe globe -->
+  <div class="relative mx-auto flex h-[42vh] min-h-[280px] max-w-[1240px] items-center justify-center md:h-[50vh]">
+    <canvas data-globe class="h-full w-full max-w-[620px]" aria-hidden="true"></canvas>
+  </div>
+
+  <div class="relative mx-auto -mt-[10vh] flex max-w-[1240px] flex-col items-center text-center md:-mt-[12vh]">
+    <h1 class="display text-[clamp(40px,7.2vw,108px)]">
+      <span data-hero-line class="block md:whitespace-nowrap">Esnafın web sitesi<span class="dot">.</span></span>
+      <span data-hero-line class="block">7 günde<span class="dot">.</span></span>
     </h1>
-    <p data-hero-fade class="max-w-[640px] text-lg leading-relaxed text-soft md:text-[21px]">
-      Tasarımı ajans kalitesinde, fiyatı baştan belli, 7 günde yayında. Toplantı yok, pazarlık yok. Formu doldurursunuz, siteniz gelir.
+    <p data-hero-line class="mt-7 max-w-[640px] text-sm leading-relaxed text-paper/70 md:text-[15px]">
+      Tadilattan kliniğe, müşterisi telefondan arayan işletmeler için hızlı, Google’da bulunan siteler. Sabit fiyat, toplantısız süreç, yazılı teslim tarihi.
     </p>
-    <div data-hero-fade class="flex flex-wrap justify-center gap-3 pt-1">
-      <a href={site.orderFormUrl} data-magnetic class="btn-silk px-7 py-4 text-base">Projeye başla <Arrow color="#17130B" /></a>
-      <a href="#calismalar" class="btn-ghost px-6 py-4 text-base">Çalışmaları gör</a>
+    <div data-hero-line class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href={site.orderFormUrl} class="btn-pink">Sipariş ver <span aria-hidden="true">→</span></a>
+      <a href="#yontem" class="btn-line">Nasıl çalışır</a>
+    </div>
+
+    <!-- facts bar -->
+    <div data-hero-line class="mt-12 flex w-full max-w-[820px] flex-wrap items-stretch justify-center divide-x divide-white/10 rounded-2xl border border-white/10 bg-coal-2/80 backdrop-blur">
+      {facts.map((f) => (
+        <div class="flex min-w-[45%] grow flex-col items-center gap-1 px-4 py-3 sm:min-w-0">
+          <span class="font-display text-lg font-bold">{f.value}</span>
+          <span class="text-[10px] uppercase tracking-[0.14em] text-paper/50">{f.label}</span>
+        </div>
+      ))}
     </div>
   </div>
 
-  <!-- Showcase -->
-  <div class="relative mx-auto mt-16 h-[360px] max-w-[1200px] sm:h-[480px] md:mt-14 md:h-[660px]" data-stage style="perspective: 2400px" aria-hidden="true">
-    <div data-stage-tilt class="absolute inset-0" style="transform-style: preserve-3d">
-    <div data-stage-inner class="absolute inset-0" style="transform-style: preserve-3d">
-    <!-- back left: nakliye -->
-    <div data-fan="left" class="absolute left-[2%] top-[70px] hidden h-[380px] w-[45%] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0F2D4A] text-left shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] lg:flex" style="transform: rotateY(18deg) rotateX(6deg) translateZ(-120px)">
-      <div class="flex h-[30px] items-center gap-1.5 bg-black/25 px-3"><i class="size-2 rounded-full bg-white/25"></i><i class="size-2 rounded-full bg-white/25"></i><i class="size-2 rounded-full bg-white/25"></i></div>
-      <div class="flex flex-col gap-3.5 p-8 text-[#EAF1F8]">
-        <span class="text-xs text-[#A9BDD1]">Hızlı Taşı Nakliyat</span>
-        <span class="text-3xl font-semibold leading-tight tracking-tight">Eşyalarınız sigortalı, taşıma tek fiyat.</span>
-        <div class="mt-2 grid grid-cols-3 gap-2 rounded-xl bg-[#EAF1F8] p-4"><i class="h-8 rounded-md border border-[#C3D2E0] bg-white"></i><i class="h-8 rounded-md border border-[#C3D2E0] bg-white"></i><i class="h-8 rounded-md bg-[#1E5B93]"></i></div>
-      </div>
-    </div>
-    <!-- back right: psikolog -->
-    <div data-fan="right" class="absolute right-[2%] top-[70px] hidden h-[380px] w-[45%] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#F4EEE8] text-left shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] lg:flex" style="transform: rotateY(-18deg) rotateX(6deg) translateZ(-120px)">
-      <div class="flex h-[30px] items-center gap-1.5 bg-[#E6DDD4] px-3"><i class="size-2 rounded-full bg-[#CBBDB0]"></i><i class="size-2 rounded-full bg-[#CBBDB0]"></i><i class="size-2 rounded-full bg-[#CBBDB0]"></i></div>
-      <div class="grid grid-cols-[1fr_150px] gap-5 p-8 text-[#3A2F2A]">
-        <div class="flex flex-col gap-3.5"><span class="text-xs text-[#7A6B62]">Uzm. Psk. Ayşe Demir</span><span class="font-serif text-4xl leading-none">Kendinize ayırdığınız bir saat.</span><span class="self-start rounded-full bg-[#6C4F43] px-3.5 py-2 text-xs font-semibold text-white">Randevu al</span></div>
-        <div class="h-[230px] rounded-[80px_80px_10px_10px] bg-gradient-to-b from-[#D9C9BD] to-[#BFA897]"></div>
-      </div>
-    </div>
-    <!-- front: tadilat -->
-    <div class="absolute left-1/2 top-0 flex h-[320px] w-[94%] flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#1C1B18] text-left shadow-[0_60px_120px_-30px_rgba(0,0,0,0.9)] sm:h-[420px] md:h-[480px] md:w-[58%]" style="transform: translateX(-50%) rotateX(8deg)">
-      <div class="flex h-9 items-center gap-2 bg-[#121210] px-3.5"><i class="size-2.5 rounded-full bg-[#3A3934]"></i><i class="size-2.5 rounded-full bg-[#3A3934]"></i><i class="size-2.5 rounded-full bg-[#3A3934]"></i><span class="ml-4 font-mono text-[11px] text-[#7C7A72]">ustayapi.com.tr</span></div>
-      <div class="flex grow flex-col gap-4 p-6 md:p-10" style="background: linear-gradient(180deg, rgba(28,27,24,0.2), #1C1B18), linear-gradient(120deg, #4A443A, #2A2823)">
-        <div class="flex justify-between text-[13px] text-[#B5AE9F]"><span class="font-bold tracking-[0.08em] text-[#F4EFE6]">USTA YAPI</span><span class="hidden sm:inline">Projeler · Hizmetler · Keşif</span></div>
-        <span class="max-w-[11em] pt-4 text-3xl font-semibold leading-none tracking-tight text-[#F4EFE6] md:pt-7 md:text-5xl">Evinizi baştan yapıyoruz. <span class="font-serif font-normal italic text-[#E8A33D]">Anahtar teslim.</span></span>
-        <span class="self-start rounded-full bg-[#E8A33D] px-4 py-2.5 text-[13px] font-semibold text-[#1C1B18]">Ücretsiz keşif iste</span>
-        <div class="mt-auto grid grid-cols-3 gap-2.5 sm:grid-cols-4"><i class="h-16 rounded-lg bg-[#6B6254] md:h-24"></i><i class="h-16 rounded-lg bg-[#8A7E6B] md:h-24"></i><i class="h-16 rounded-lg bg-[#574F43] md:h-24"></i><i class="hidden h-16 rounded-lg bg-[#9C8F79] sm:block md:h-24"></i></div>
-      </div>
-    </div>
-    <!-- glass: speed -->
-    <div data-chip data-float class="glass absolute bottom-0 left-[4%] flex items-center gap-4 rounded-[18px] px-5 py-4 text-left shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] md:left-[8%] md:top-[440px] md:bottom-auto">
-      <span data-ring class="ring flex size-14 items-center justify-center rounded-full"><span class="flex size-[46px] items-center justify-center rounded-full bg-[#161A18] font-mono text-[15px] text-mint">95+</span></span>
-      <span class="flex flex-col gap-0.5"><span class="text-sm font-semibold">PageSpeed hedefi</span><span class="text-[12.5px] text-muted">Her teslimde raporuyla</span></span>
-    </div>
-    <!-- phone -->
-    <div data-chip data-float="slow" class="absolute right-[9%] top-[300px] hidden h-[330px] w-[200px] rounded-[34px] border border-white/15 bg-[#0D0E0D] p-[9px] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)] md:block">
-      <div class="flex h-full flex-col gap-2.5 rounded-[26px] bg-gradient-to-b from-[#4A443A] to-[#1C1B18] px-4 py-5 text-left text-[#F4EFE6]">
-        <span class="text-[10px] font-bold tracking-[0.08em]">USTA YAPI</span>
-        <span class="pt-4 text-[21px] font-semibold leading-tight tracking-tight">Evinizi baştan yapıyoruz.</span>
-        <span class="self-start rounded-full bg-[#E8A33D] px-3 py-1.5 text-[10px] font-semibold text-[#1C1B18]">Hemen ara</span>
-        <i class="mt-auto h-[90px] rounded-[10px] bg-[#6B6254]"></i>
-      </div>
-    </div>
-    <!-- glass: preview ready -->
-    <div data-chip data-float class="glass absolute right-0 top-5 hidden items-center gap-3 rounded-2xl px-4 py-3.5 text-left shadow-[0_30px_60px_-20px_rgba(0,0,0,0.8)] md:flex">
-      <span class="flex size-[34px] items-center justify-center rounded-[10px] bg-silk/15"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F1DFB8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5" /></svg></span>
-      <span class="flex flex-col gap-0.5"><span class="text-[13.5px] font-semibold">Önizleme hazır</span><span class="text-xs text-muted">3. gün · telefonunuza gönderildi</span></span>
-    </div>
-    </div>
+  <!-- sectors marquee -->
+  <div class="relative mt-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]" aria-label="Çalıştığım sektörler">
+    <div class="marquee gap-10 text-[13px] uppercase tracking-[0.2em] text-paper/45">
+      {row.map((s, i) => <span class="flex items-center gap-10 whitespace-nowrap" aria-hidden={i >= sectors.length ? 'true' : undefined}>{s}<span class="text-pink">/</span></span>)}
     </div>
   </div>
 </section>

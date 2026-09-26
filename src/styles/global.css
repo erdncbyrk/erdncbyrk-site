@@ -1,157 +1,93 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #0A0C0B;
-  --color-panel: #141816;
-  --color-panel-2: #0F1211;
-  --color-paper: #EDEAE3;
-  --color-soft: #A7ADA9;
-  --color-muted: #8C918D;
-  --color-faint: #6F7571;
-  --color-silk: #F1DFB8;
-  --color-silk-light: #F6E9CC;
-  --color-silk-deep: #D8B77E;
-  --color-gold: #C9A46A;
-  --color-mint: #7FD1A8;
-  --color-bursa: #2E6B54;
+  --color-coal: #171717;
+  --color-coal-2: #1E1E1E;
+  --color-coal-3: #262626;
+  --color-paper: #F0F0F8;
+  --color-snow: #F6F6F8;
+  --color-pink: #E4007C;
+  --color-pink-soft: #FF3D9E;
+  --color-amber: #F5B90A;
 
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono Variable", ui-monospace, Menlo, monospace;
-  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, Menlo, Consolas, monospace;
+  --font-display: "Geist Mono Variable", "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-sans: var(--font-mono);
 }
 
 @layer base {
-  html { scroll-behavior: smooth; background: var(--color-ink); color-scheme: dark; overflow-x: clip; }
+  html { background: var(--color-coal); color-scheme: dark; overflow-x: clip; }
   body {
-    background: var(--color-ink);
+    background: var(--color-coal);
     color: var(--color-paper);
-    font-family: var(--font-sans);
+    font-family: var(--font-mono);
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
   }
-  h1, h2, h3 { text-wrap: balance; }
-  ::selection { background: var(--color-silk-deep); color: var(--color-ink); }
-  :focus-visible { outline: 2px solid var(--color-silk); outline-offset: 3px; border-radius: 6px; }
+  h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-pink); color: #fff; }
+  :focus-visible { outline: 2px solid var(--color-pink); outline-offset: 3px; }
 }
 
 @layer components {
-  /* Serif italic accent with the silk sheen */
-  .silk {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    background: linear-gradient(100deg, #F6E9CC 0%, #D8B77E 45%, #F1DFB8 70%, #B58D52 100%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: sheen 8s ease-in-out infinite;
-  }
-  .accent { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: #E6CFA0; }
+  /* Big display headings: heavy, tight mono */
+  .display { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.045em; line-height: 0.98; }
+  .dot { color: var(--color-pink); }
 
-  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); }
+  /* [ LABEL ] section markers */
+  .label { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.55; }
 
-  .glass {
-    background: rgba(20, 24, 22, 0.66);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-  .card { background: var(--color-panel); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 22px; }
-
-  .btn-silk {
+  .btn-pink {
     display: inline-flex; align-items: center; gap: 10px;
-    border-radius: 999px; font-weight: 600; color: #17130B;
-    background: linear-gradient(180deg, #F6E9CC, #D8B77E);
-    box-shadow: 0 10px 40px -10px rgba(216, 183, 126, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    transition: transform .25s ease, box-shadow .25s ease;
+    padding: 14px 22px; border-radius: 999px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--color-pink); color: #fff;
+    box-shadow: 0 10px 30px -10px rgba(228, 0, 124, 0.8);
+    transition: background .2s ease, transform .2s ease;
   }
-  .btn-silk:hover { transform: translateY(-1px); box-shadow: 0 16px 50px -10px rgba(216, 183, 126, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 8px;
-    border-radius: 999px; font-weight: 500;
-    border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.03);
-    transition: border-color .25s ease, background .25s ease;
+  .btn-pink:hover { background: #F5168F; transform: translateY(-1px); }
+  .btn-line {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 22px; border-radius: 999px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase;
+    border: 1px solid currentColor; opacity: 0.85;
+    transition: opacity .2s ease, background .2s ease;
   }
-  .btn-ghost:hover { border-color: rgba(241, 223, 184, 0.45); background: rgba(241, 223, 184, 0.06); }
+  .btn-line:hover { opacity: 1; background: rgba(127,127,127,0.08); }
 
-  .glow { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(0); }
+  .dotgrid {
+    background-image: radial-gradient(rgba(240,240,248,0.13) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+  .dotgrid-dark {
+    background-image: radial-gradient(rgba(23,23,23,0.12) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
 
-  /* Scroll reveal: content is visible by default; JS opts in */
-  .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
-  .js .reveal.in { opacity: 1; transform: none; }
-
-  .marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
-  .tilt { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
-  .tilt:hover { transform: translateY(-6px); }
+  .marquee { display: flex; width: max-content; animation: marquee 45s linear infinite; }
+  .caret::after { content: "▌"; margin-left: 2px; color: var(--color-pink); animation: blink 1s steps(1) infinite; }
 }
 
-@layer components {
-  /* Split-word masks used by GSAP heading reveals */
-  .w-mask { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.06em 0.12em; margin: 0 -0.06em -0.12em; }
-  .w { display: inline-block; will-change: transform; }
-
-  /* Pointer spotlight on cards (position set by JS via --mx / --my) */
-  .spot { position: relative; isolation: isolate; transform-style: preserve-3d; }
-  .spot::after {
-    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
-    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(241, 223, 184, 0.13), transparent 45%);
-    opacity: 0; transition: opacity .4s ease;
-  }
-  .spot:hover::after { opacity: 1; }
-
-  /* Rotating gradient border for the featured plan */
-  .border-spin {
-    background: conic-gradient(from var(--angle), #F6E9CC, rgba(201,164,106,0.15) 25%, rgba(127,209,168,0.5) 50%, rgba(201,164,106,0.15) 75%, #F6E9CC);
-    animation: spin 6s linear infinite;
-  }
-
-  /* PageSpeed ring, value animated through --p */
-  .ring { background: conic-gradient(#7FD1A8 calc(var(--p) * 1%), rgba(255,255,255,0.1) 0); }
-
-  /* Nav condenses after scrolling */
-  .nav-pill { transition: max-width .6s cubic-bezier(.2,.7,.2,1), background-color .4s ease, box-shadow .4s ease; }
-
-  /* Film grain over everything */
-  .grain {
-    position: fixed; inset: -50%; z-index: 70; pointer-events: none; opacity: 0.07;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grain 1.2s steps(6) infinite;
-  }
-
-  /* Soft light that trails the cursor (desktop only) */
-  .cursor-glow {
-    position: fixed; left: 0; top: 0; z-index: 1; width: 520px; height: 520px; margin: -260px 0 0 -260px;
-    border-radius: 50%; pointer-events: none; opacity: 0;
-    background: radial-gradient(closest-side, rgba(216,183,126,0.10), transparent);
-    transition: opacity .6s ease;
-  }
-  @media (hover: hover) and (pointer: fine) { .motion-on .cursor-glow { opacity: 1; } }
-
-  .drift { animation: drift 18s ease-in-out infinite alternate; }
-  .drift-slow { animation: drift2 26s ease-in-out infinite alternate; }
-}
-
-@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-@property --p { syntax: "<number>"; initial-value: 96; inherits: false; }
-@keyframes spin { to { --angle: 360deg; } }
-@keyframes grain { 0% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); } 60% { transform: translate(-2%,-1%); } 80% { transform: translate(3%,3%); } 100% { transform: translate(0,0); } }
-@keyframes drift { from { translate: -50% 0; transform: scale(1); } to { translate: -46% 60px; transform: scale(1.12); } }
-
-@keyframes drift2 { from { translate: 0 0; transform: scale(1); } to { translate: -90px 70px; transform: scale(1.15); } }
-
-@keyframes sheen { 0%, 100% { background-position: 0% 0; } 50% { background-position: 100% 0; } }
 @keyframes marquee { to { transform: translateX(-50%); } }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-.float { animation: float 6s ease-in-out infinite; }
-.float-slow { animation: float 8s ease-in-out infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Nav */
+.nav-pill { transition: background-color .4s ease, box-shadow .4s ease; }
+[data-nav].is-scrolled .nav-pill { background-color: rgba(28, 28, 28, 0.92); box-shadow: 0 18px 40px -18px rgba(0,0,0,0.7); }
+
+/* Horizontal method track: only when motion is on and screen is wide */
+[data-hscroll] { display: none; }
+@media (min-width: 1024px) {
+  .motion-on [data-hscroll] { display: block; }
+  .motion-on [data-vstack] { display: none; }
+}
+
+/* Method progress letters */
+.step-dot { transition: color .3s ease, opacity .3s ease; opacity: 0.35; }
+.step-dot.on { opacity: 1; }
+
+/* Hidden until GSAP brings them in (motion-on is set in <head>) */
+.motion-on [data-fade], .motion-on [data-hero-line] { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .silk, .marquee-track, .float, .float-slow, .border-spin, .grain, .drift, .drift-slow { animation: none; }
-  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .marquee { animation: none; }
+  .caret::after { animation: none; }
 }
-
-/* Unlayered so it beats the Tailwind max-w utility */
-[data-nav].is-scrolled .nav-pill { max-width: 900px; background-color: rgba(12, 15, 13, 0.82); box-shadow: 0 20px 50px -20px rgba(0,0,0,0.8); }

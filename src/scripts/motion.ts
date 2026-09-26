@@ -4,200 +4,309 @@ import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const root = document.documentElement;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-const root = document.documentElement;
 
-/* ---------- Nav: condense on scroll (works even with reduced motion) ---------- */
+/* ---------- Nav state + scroll percentage (no motion involved) ---------- */
 const nav = document.querySelector<HTMLElement>('[data-nav]');
-const onScrollNav = () => nav?.classList.toggle('is-scrolled', window.scrollY > 40);
-window.addEventListener('scroll', onScrollNav, { passive: true });
-onScrollNav();
+const pct = document.querySelector<HTMLElement>('[data-progress]');
+const bar = document.querySelector<HTMLElement>('[data-progress-bar]');
+const onScroll = () => {
+  nav?.classList.toggle('is-scrolled', window.scrollY > 24);
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const p = max > 0 ? Math.round((window.scrollY / max) * 100) : 0;
+  if (pct) pct.textContent = `${p}%`;
+  if (bar) bar.style.height = `${p}%`;
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
+/* ---------- Canvas helpers ---------- */
+type Loop = { draw: (t: number) => void; canvas: HTMLCanvasElement };
+const loops: Loop[] = [];
+const visible = new WeakMap<Element, boolean>();
+const io = new IntersectionObserver((entries) => entries.forEach((e) => visible.set(e.target, e.isIntersecting)), { rootMargin: '100px' });
+
+const fit = (c: HTMLCanvasElement) => {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const r = c.getBoundingClientRect();
+  c.width = Math.max(1, Math.round(r.width * dpr));
+  c.height = Math.max(1, Math.round(r.height * dpr));
+  const ctx = c.getContext('2d')!;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { ctx, w: r.width, h: r.height };
+};
+
+const mouse = { x: -9999, y: -9999, nx: 0, ny: 0 };
+window.addEventListener('pointermove', (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+  mouse.nx = e.clientX / window.innerWidth - 0.5;
+  mouse.ny = e.clientY / window.innerHeight - 0.5;
+});
+
+/* ---------- Wireframe globe ---------- */
+const globe = document.querySelector<HTMLCanvasElement>('[data-globe]');
+if (globe) {
+  let g = fit(globe);
+  window.addEventListener('resize', () => (g = fit(globe)));
+  const LAT = 11, LON = 18, SEG = 72;
+  const lines: [number, number, number][][] = [];
+  for (let i = 1; i < LAT; i++) {
+    const phi = (i / LAT) * Math.PI;
+    lines.push(Array.from({ length: SEG + 1 }, (_, k) => {
+      const th = (k / SEG) * Math.PI * 2;
+      return [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)] as [number, number, number];
+    }));
+  }
+  for (let j = 0; j < LON; j++) {
+    const th = (j / LON) * Math.PI;
+    lines.push(Array.from({ length: SEG + 1 }, (_, k) => {
+      const phi = (k / SEG) * Math.PI * 2;
+      return [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)] as [number, number, number];
+    }));
+  }
+  // a handful of pink "cities"
+  const cities = Array.from({ length: 9 }, (_, i) => {
+    const phi = 0.9 + (i % 3) * 0.45, th = i * 0.75;
+    return [Math.sin(phi) * Math.cos(th), Math.cos(phi), Math.sin(phi) * Math.sin(th)] as [number, number, number];
+  });
+  let tiltX = 0.38, tiltY = 0;
+  const draw = (t: number) => {
+    const { ctx, w, h } = g;
+    ctx.clearRect(0, 0, w, h);
+    const R = Math.min(w, h) * 0.46;
+    const cx = w / 2, cy = h / 2;
+    tiltX += (0.38 + mouse.ny * 0.5 - tiltX) * 0.04;
+    tiltY += (mouse.nx * 0.8 - tiltY) * 0.04;
+    const rot = t * 0.00012 + tiltY;
+    const cr = Math.cos(rot), sr = Math.sin(rot), ct = Math.cos(tiltX), st = Math.sin(tiltX);
+    const project = ([x, y, z]: [number, number, number]) => {
+      const x1 = x * cr + z * sr, z1 = -x * sr + z * cr;
+      const y2 = y * ct - z1 * st, z2 = y * st + z1 * ct;
+      const s = 2.6 / (2.6 + z2);
+      return [cx + x1 * R * s, cy + y2 * R * s, z2] as const;
+    };
+    ctx.lineWidth = 1;
+    for (const line of lines) {
+      let prev = project(line[0]);
+      for (let k = 1; k < line.length; k++) {
+        const p = project(line[k]);
+        const depth = (prev[2] + p[2]) / 2; // -1 front … 1 back
+        ctx.strokeStyle = `rgba(240,240,248,${0.05 + (1 - (depth + 1) / 2) * 0.28})`;
+        ctx.beginPath();
+        ctx.moveTo(prev[0], prev[1]);
+        ctx.lineTo(p[0], p[1]);
+        ctx.stroke();
+        prev = p;
+      }
+    }
+    for (const c of cities) {
+      const p = project(c);
+      if (p[2] > 0.1) continue; // only the visible hemisphere
+      ctx.fillStyle = 'rgba(228,0,124,0.95)';
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], 2.4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = `rgba(228,0,124,${0.25 + 0.2 * Math.sin(t * 0.003 + c[0] * 5)})`;
+      ctx.beginPath();
+      ctx.arc(p[0], p[1], 7 + 3 * Math.sin(t * 0.003 + c[1] * 5), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  };
+  io.observe(globe);
+  visible.set(globe, true);
+  loops.push({ draw, canvas: globe });
+}
+
+/* ---------- Particle clouds (light sections) ---------- */
+document.querySelectorAll<HTMLCanvasElement>('[data-particles]').forEach((c) => {
+  let g = fit(c);
+  const ring = c.dataset.variant === 'ring';
+  const N = window.innerWidth < 768 ? 500 : 1100;
+  type P = { bx: number; by: number; ph: number; sp: number; r: number; ox: number; oy: number };
+  let pts: P[] = [];
+  const seed = () => {
+    const { w, h } = g;
+    pts = Array.from({ length: N }, () => {
+      let bx: number, by: number;
+      if (ring) {
+        const a = Math.random() * Math.PI * 2;
+        const rad = Math.min(w, h) * (0.42 + (Math.random() - 0.5) * 0.18) + Math.random() ** 3 * 120;
+        bx = w / 2 + Math.cos(a) * rad * 1.35;
+        by = h / 2 + Math.sin(a) * rad * 0.8;
+      } else {
+        // a diagonal drift of dust from the top-right, thinning toward the centre
+        const u = Math.random(), v = (Math.random() - 0.5) * 2;
+        bx = w * (0.98 - u * 0.62) + v * w * 0.08 * (1 - u);
+        by = h * (0.05 + u * 0.55) + v * h * 0.22 * (0.4 + u) + Math.sin(u * 6) * 30;
+        if (Math.random() < u * 0.55) { bx = -999; by = -999; } // thin out the tail
+      }
+      return { bx, by, ph: Math.random() * Math.PI * 2, sp: 0.4 + Math.random(), r: Math.random() < 0.9 ? 1.2 : 2, ox: 0, oy: 0 };
+    });
+  };
+  seed();
+  window.addEventListener('resize', () => { g = fit(c); seed(); });
+  const draw = (t: number) => {
+    const { ctx, w, h } = g;
+    ctx.clearRect(0, 0, w, h);
+    const rect = c.getBoundingClientRect();
+    const mx = mouse.x - rect.left, my = mouse.y - rect.top;
+    ctx.fillStyle = 'rgba(23,23,23,0.72)';
+    for (const p of pts) {
+      if (p.bx < -900) continue;
+      let x = p.bx + Math.sin(t * 0.0006 * p.sp + p.ph) * 10;
+      let y = p.by + Math.cos(t * 0.0005 * p.sp + p.ph) * 8;
+      if (ring) {
+        const a = t * 0.00005;
+        const dx = x - w / 2, dy = y - h / 2;
+        x = w / 2 + dx * Math.cos(a) - dy * Math.sin(a) * 0.6;
+        y = h / 2 + dx * Math.sin(a) * 0.6 + dy * Math.cos(a);
+      }
+      // push away from the cursor, then ease back
+      const dx = x - mx, dy = y - my, d2 = dx * dx + dy * dy;
+      if (finePointer && d2 < 130 * 130) {
+        const d = Math.sqrt(d2) || 1;
+        const f = (1 - d / 130) * 22;
+        p.ox += ((dx / d) * f - p.ox) * 0.2;
+        p.oy += ((dy / d) * f - p.oy) * 0.2;
+      } else {
+        p.ox *= 0.92;
+        p.oy *= 0.92;
+      }
+      ctx.fillRect(x + p.ox, y + p.oy, p.r, p.r);
+    }
+    ctx.fillStyle = '#E4007C';
+    for (let i = 0; i < pts.length; i += 97) {
+      const p = pts[i];
+      if (p.bx < -900 || ring) continue;
+      ctx.fillRect(p.bx + p.ox + Math.sin(t * 0.0006 * p.sp + p.ph) * 10, p.by + p.oy + Math.cos(t * 0.0005 * p.sp + p.ph) * 8, 2.5, 2.5);
+    }
+  };
+  io.observe(c);
+  loops.push({ draw, canvas: c });
+});
 
 if (reduce) {
   root.classList.add('motion-off');
+  // draw each canvas once so the page still has its imagery
+  requestAnimationFrame(() => loops.forEach((l) => l.draw(0)));
 } else {
   root.classList.add('motion-on');
 
+  const tick = (t: number) => {
+    for (const l of loops) if (visible.get(l.canvas)) l.draw(t);
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+
   /* ---------- Smooth scroll ---------- */
-  const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
   gsap.ticker.lagSmoothing(0);
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
-      if (!id || id === '#') return;
-      const target = document.querySelector(id);
+      const target = id && id !== '#' ? document.querySelector<HTMLElement>(id) : null;
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: -90 });
+      lenis.scrollTo(target, { offset: -70 });
     });
   });
 
-  /* ---------- Split headings into words ---------- */
-  const split = (el: HTMLElement) => {
-    const out: HTMLElement[] = [];
-    const wrap = (node: Node) => {
-      const mask = document.createElement('span');
-      mask.className = 'w-mask';
-      const inner = document.createElement('span');
-      inner.className = 'w';
-      mask.appendChild(inner);
-      inner.appendChild(node);
-      out.push(inner);
-      return mask;
-    };
-    [...el.childNodes].forEach((node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const parts = (node.textContent ?? '').split(/(\s+)/);
-        const frag = document.createDocumentFragment();
-        parts.forEach((p) => {
-          if (!p) return;
-          if (/^\s+$/.test(p)) frag.appendChild(document.createTextNode(' '));
-          else frag.appendChild(wrap(document.createTextNode(p)));
+  const ease = 'power3.out';
+
+  /* ---------- Hero ---------- */
+  gsap.fromTo('[data-hero-line]', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease, stagger: 0.12, delay: 0.15 });
+  gsap.fromTo('[data-globe]', { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 2, ease });
+
+  /* ---------- Scramble-in headings ---------- */
+  const GLYPHS = 'ABCÇDEFGĞHIİJKLMNOÖPRSŞTUÜVYZ0123456789#%&*/<>+=';
+  document.querySelectorAll<HTMLElement>('[data-scramble]').forEach((el) => {
+    const node = [...el.childNodes].find((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim());
+    if (!node) return;
+    const final = node.textContent || '';
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        const state = { p: 0 };
+        gsap.to(state, {
+          p: 1,
+          duration: 1.1,
+          ease: 'power2.out',
+          onUpdate: () => {
+            const n = Math.floor(state.p * final.length);
+            let out = final.slice(0, n);
+            for (let i = n; i < final.length; i++) out += final[i] === ' ' ? ' ' : GLYPHS[(Math.random() * GLYPHS.length) | 0];
+            node.textContent = out;
+          },
+          onComplete: () => { node.textContent = final; },
         });
-        el.replaceChild(frag, node);
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        el.replaceChild(wrap(node.cloneNode(true)), node);
-      }
+      },
     });
-    return out;
-  };
-
-  /* ---------- Hero intro ---------- */
-  const heroTitle = document.querySelector<HTMLElement>('[data-hero-title]');
-  gsap.set('[data-stage-inner]', { rotateX: 16, transformOrigin: '50% 0%' });
-  const intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-  if (heroTitle) {
-    const words = split(heroTitle);
-    intro.from(words, { yPercent: 110, rotate: 4, filter: 'blur(8px)', opacity: 0, duration: 1.3, stagger: 0.06 }, 0.1);
-  }
-  intro
-    .from('[data-hero-fade]', { y: 24, opacity: 0, filter: 'blur(6px)', duration: 1.1, stagger: 0.1 }, 0.35)
-    .from('[data-stage-inner]', { y: 120, rotateX: 35, opacity: 0, duration: 1.8 }, 0.5)
-    .from('[data-fan="left"]', { x: 160, opacity: 0, duration: 1.6 }, 0.9)
-    .from('[data-fan="right"]', { x: -160, opacity: 0, duration: 1.6 }, 0.9)
-    .from('[data-chip]', { scale: 0.7, rotate: -6, opacity: 0, duration: 1.1, stagger: 0.14, ease: 'back.out(1.7)' }, 1.3)
-    .fromTo('[data-ring]', { '--p': 0 }, { '--p': 96, duration: 1.8, ease: 'power3.out' }, 1.4);
-
-  // Gentle floating for the chips (y is free: intro uses scale, scroll uses yPercent)
-  document.querySelectorAll<HTMLElement>('[data-float]').forEach((el, i) => {
-    gsap.to(el, { y: -12, duration: el.dataset.float === 'slow' ? 4.2 : 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: i * 0.6 });
   });
 
-  /* ---------- Hero stage: scroll-linked 3D flatten + fan-out ---------- */
-  const stage = document.querySelector<HTMLElement>('[data-stage]');
-  if (stage) {
-    gsap.to('[data-stage-inner]', {
-      rotateX: 0, scale: 1.04, ease: 'none',
-      scrollTrigger: { trigger: stage, start: 'top 75%', end: 'bottom 30%', scrub: 1 },
+  /* ---------- Typed lines ---------- */
+  document.querySelectorAll<HTMLElement>('[data-type]').forEach((el) => {
+    const text = el.dataset.type || '';
+    el.textContent = '';
+    el.classList.add('caret');
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 90%',
+      once: true,
+      onEnter: () => {
+        const s = { i: 0 };
+        gsap.to(s, { i: text.length, duration: text.length * 0.035, ease: 'none', delay: 0.6, onUpdate: () => (el.textContent = text.slice(0, Math.round(s.i))) });
+      },
     });
-    gsap.to('[data-fan="left"]', { xPercent: -14, rotateY: 26, ease: 'none', scrollTrigger: { trigger: stage, start: 'top 75%', end: 'bottom 20%', scrub: 1 } });
-    gsap.to('[data-fan="right"]', { xPercent: 14, rotateY: -26, ease: 'none', scrollTrigger: { trigger: stage, start: 'top 75%', end: 'bottom 20%', scrub: 1 } });
-    gsap.to('[data-chip]', { yPercent: -60, ease: 'none', stagger: 0.1, scrollTrigger: { trigger: stage, start: 'top 60%', end: 'bottom top', scrub: 1.2 } });
+  });
 
-    // Mouse parallax on the whole stage
-    if (finePointer) {
-      const tilt = stage.querySelector<HTMLElement>('[data-stage-tilt]');
-      const rx = gsap.quickTo(tilt, 'rotationX', { duration: 0.9, ease: 'power3.out' });
-      const ry = gsap.quickTo(tilt, 'rotationY', { duration: 0.9, ease: 'power3.out' });
-      window.addEventListener('pointermove', (e) => {
-        const x = e.clientX / window.innerWidth - 0.5;
-        const y = e.clientY / window.innerHeight - 0.5;
-        rx(-y * 8);
-        ry(x * 10);
+  /* ---------- Fade-up ---------- */
+  gsap.set('[data-fade]', { opacity: 0, y: 30 });
+  ScrollTrigger.batch('[data-fade]', {
+    start: 'top 88%',
+    once: true,
+    onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, ease, stagger: 0.08, overwrite: true }),
+  });
+
+  /* ---------- Method: horizontal pinned track ---------- */
+  const pin = document.querySelector<HTMLElement>('[data-hscroll-pin]');
+  const track = document.querySelector<HTMLElement>('[data-hscroll-track]');
+  if (pin && track && getComputedStyle(pin.parentElement!).display !== 'none') {
+    const dots = [...document.querySelectorAll<HTMLElement>('[data-step-dot]')];
+    const dist = () => track.scrollWidth - window.innerWidth;
+    const horizontal = gsap.to(track, {
+      x: () => -dist(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: pin,
+        pin: true,
+        scrub: 0.8,
+        end: () => `+=${dist()}`,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const i = Math.min(dots.length - 1, Math.round(self.progress * (dots.length - 1)));
+          dots.forEach((d, j) => d.classList.toggle('on', j <= i));
+        },
+      },
+    });
+    dots[0]?.classList.add('on');
+    // each panel's content slides in as it crosses the viewport
+    gsap.utils.toArray<HTMLElement>('[data-hscroll-track] article').forEach((art, i) => {
+      if (i === 0) return;
+      gsap.from(art.querySelectorAll('h3, p, li'), {
+        x: 140,
+        opacity: 0,
+        stagger: 0.05,
+        ease: 'none',
+        scrollTrigger: { trigger: art, containerAnimation: horizontal, start: 'left 90%', end: 'left 30%', scrub: true },
       });
-    }
-  }
-
-  /* ---------- Section headings: word reveal ---------- */
-  document.querySelectorAll<HTMLElement>('[data-split]').forEach((h) => {
-    const words = split(h);
-    gsap.from(words, {
-      yPercent: 105, opacity: 0, rotate: 3, duration: 1.1, ease: 'expo.out', stagger: 0.045,
-      scrollTrigger: { trigger: h, start: 'top 85%' },
     });
-  });
-
-  /* ---------- Staggered card entrances ---------- */
-  document.querySelectorAll<HTMLElement>('[data-stagger]').forEach((group) => {
-    gsap.from(group.children, {
-      y: 60, opacity: 0, scale: 0.97, duration: 1.1, ease: 'expo.out', stagger: 0.09,
-      scrollTrigger: { trigger: group, start: 'top 82%' },
-    });
-  });
-
-  /* ---------- Bento: bars grow ---------- */
-  gsap.from('[data-bar]', {
-    scaleY: 0, transformOrigin: 'bottom', duration: 1.2, ease: 'expo.out', stagger: 0.07,
-    scrollTrigger: { trigger: '[data-bars]', start: 'top 85%' },
-  });
-
-  /* ---------- Process: line draws with scroll ---------- */
-  const mm = gsap.matchMedia();
-  mm.add('(min-width: 768px)', () => {
-    gsap.fromTo('[data-line]', { scaleX: 0 }, { scaleX: 1, transformOrigin: 'left', ease: 'none', scrollTrigger: { trigger: '[data-steps]', start: 'top 80%', end: 'bottom 55%', scrub: 1 } });
-  });
-  mm.add('(max-width: 767px)', () => {
-    gsap.fromTo('[data-line]', { scaleY: 0 }, { scaleY: 1, transformOrigin: 'top', ease: 'none', scrollTrigger: { trigger: '[data-steps]', start: 'top 80%', end: 'bottom 60%', scrub: 1 } });
-  });
-  gsap.from('[data-steps] li', {
-    y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.15,
-    scrollTrigger: { trigger: '[data-steps]', start: 'top 80%' },
-  });
-
-  /* ---------- Ambient glows drift with scroll ---------- */
-  gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((el) => {
-    const speed = Number(el.dataset.parallax) || 0.2;
-    gsap.to(el, { yPercent: speed * 100, ease: 'none', scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } });
-  });
-
-  /* ---------- Footer wordmark ---------- */
-  gsap.from('[data-wordmark]', {
-    yPercent: 60, letterSpacing: '0.02em', opacity: 0, ease: 'none',
-    scrollTrigger: { trigger: '[data-wordmark]', start: 'top bottom', end: 'bottom bottom', scrub: 1 },
-  });
-
-  /* ---------- Pointer effects (desktop only) ---------- */
-  if (finePointer) {
-    // Spotlight + 3D tilt cards
-    document.querySelectorAll<HTMLElement>('[data-tilt]').forEach((card) => {
-      const max = Number(card.dataset.tilt) || 6;
-      const rx = gsap.quickTo(card, 'rotationX', { duration: 0.6, ease: 'power3.out' });
-      const ry = gsap.quickTo(card, 'rotationY', { duration: 0.6, ease: 'power3.out' });
-      gsap.set(card, { transformPerspective: 1000 });
-      card.addEventListener('pointermove', (e) => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width;
-        const y = (e.clientY - r.top) / r.height;
-        card.style.setProperty('--mx', `${x * 100}%`);
-        card.style.setProperty('--my', `${y * 100}%`);
-        rx((0.5 - y) * max);
-        ry((x - 0.5) * max);
-      });
-      card.addEventListener('pointerleave', () => { rx(0); ry(0); });
-    });
-
-    // Magnetic buttons
-    document.querySelectorAll<HTMLElement>('[data-magnetic]').forEach((btn) => {
-      const x = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'power3.out' });
-      const y = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'power3.out' });
-      btn.addEventListener('pointermove', (e) => {
-        const r = btn.getBoundingClientRect();
-        x((e.clientX - (r.left + r.width / 2)) * 0.25);
-        y((e.clientY - (r.top + r.height / 2)) * 0.35);
-      });
-      btn.addEventListener('pointerleave', () => { x(0); y(0); });
-    });
-
-    // Cursor glow that follows the pointer
-    const glow = document.querySelector<HTMLElement>('[data-cursor]');
-    if (glow) {
-      const gx = gsap.quickTo(glow, 'x', { duration: 0.8, ease: 'power3.out' });
-      const gy = gsap.quickTo(glow, 'y', { duration: 0.8, ease: 'power3.out' });
-      window.addEventListener('pointermove', (e) => { gx(e.clientX); gy(e.clientY); });
-    }
   }
 
   window.addEventListener('load', () => ScrollTrigger.refresh());

@@ -1,21 +1,23 @@
 ---
 import { faqs } from '../data/site';
 ---
-<section id="sss" class="relative mx-auto grid max-w-[1200px] scroll-mt-28 grid-cols-1 gap-10 px-4 pt-32 md:pt-44 lg:grid-cols-[460px_1fr] lg:gap-20">
-  <div class="reveal flex flex-col gap-4">
-    <span class="eyebrow">Sık sorulanlar</span>
-    <h2 data-split class="text-[clamp(36px,4.2vw,52px)] font-medium leading-[1.04] tracking-[-0.035em]">Sipariş öncesi <span class="accent">merak edilenler.</span></h2>
-  </div>
-  <div class="reveal flex flex-col gap-3">
-    {faqs.map((f, i) => (
-      <details class="faq group rounded-[18px] border border-white/[0.08] transition-colors open:bg-panel open:border-white/10" open={i === 0}>
-        <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-7 py-6 text-lg font-medium md:text-xl">
-          {f.q}
-          <svg class="shrink-0 transition-transform duration-300 group-open:rotate-45" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E6CFA0" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
-        </summary>
-        <p class="px-7 pb-6 text-base leading-relaxed text-soft">{f.a}</p>
-      </details>
-    ))}
+<section id="sss" class="relative scroll-mt-20 border-t border-white/10 px-4 py-28 md:py-36">
+  <div class="mx-auto grid max-w-[1180px] gap-12 lg:grid-cols-[300px_1fr] lg:gap-20">
+    <div>
+      <span class="label">[ SSS ]</span>
+      <h2 data-scramble class="display mt-6 text-[clamp(36px,4.4vw,60px)]">Sorular<span class="dot">.</span></h2>
+    </div>
+    <div class="flex flex-col border-t border-white/10">
+      {faqs.map((f, i) => (
+        <details class="faq group border-b border-white/10" open={i === 0}>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-[15px] text-paper/80 transition-colors hover:text-paper group-open:text-paper">
+            <span class="flex gap-5"><span class="text-paper/30">0{i + 1}</span>{f.q}</span>
+            <span class="font-display text-xl text-pink transition-transform duration-300 group-open:rotate-45" aria-hidden="true">+</span>
+          </summary>
+          <p class="max-w-[640px] pb-6 pl-10 text-[14px] leading-relaxed text-paper/60">{f.a}</p>
+        </details>
+      ))}
+    </div>
   </div>
 </section>
 

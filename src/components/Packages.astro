@@ -1,39 +1,29 @@
 ---
-import Check from './Check.astro';
 import { plans, site } from '../data/site';
 ---
-<section id="paketler" class="relative mx-auto max-w-[1200px] scroll-mt-28 px-4 pt-32 md:pt-44">
-  <div data-parallax="0.3" class="glow left-1/2 top-64 h-[600px] w-[min(700px,100%)] -translate-x-1/2" style="background: radial-gradient(closest-side, rgba(201,164,106,0.16), transparent)"></div>
-  <div class="relative flex flex-col items-center gap-4 text-center">
-    <span class="eyebrow">Paketler</span>
-    <h2 data-split class="max-w-[860px] text-[clamp(38px,5vw,64px)] font-medium leading-[1.02] tracking-[-0.035em]">Ne alacağınız da, ne ödeyeceğiniz de <span class="accent">baştan belli.</span></h2>
-  </div>
+<section id="paketler" class="relative scroll-mt-20 bg-snow px-4 py-28 text-coal md:py-40">
+  <div class="mx-auto max-w-[1180px]">
+    <div class="flex flex-col items-center text-center">
+      <span class="label">[ Paketler ]</span>
+      <h2 data-scramble class="display mt-6 text-[clamp(38px,6vw,84px)]">Fiyat yazılı<span class="dot">.</span></h2>
+      <p data-fade class="mt-6 max-w-[560px] text-sm leading-relaxed text-coal/65">Paket dışı istekler (ek sayfa, e-ticaret, özel yazılım) sipariş öncesi yazılı olarak fiyatlandırılır.</p>
+    </div>
 
-  <div data-stagger class="relative mt-14 grid grid-cols-1 items-stretch gap-5 lg:grid-cols-3">
-    {plans.map((p) =>
-      p.featured ? (
-        <div data-tilt="4" class="border-spin flex rounded-3xl p-px shadow-[0_40px_100px_-40px_rgba(216,183,126,0.45)]">
-          <div class="flex grow flex-col gap-7 rounded-[23px] p-9 md:p-10" style="background: linear-gradient(180deg,#1B1A16,#121412)">
-            <div class="flex flex-col gap-2">
-              <div class="flex items-center justify-between"><h3 class="text-2xl font-medium">{p.name}</h3><span class="rounded-full bg-gradient-to-b from-silk-light to-silk-deep px-3 py-1.5 text-xs font-semibold text-[#17130B]">Önerilen</span></div>
-              <p class="text-[15px] leading-normal text-soft">{p.blurb}</p>
-            </div>
-            <div class="flex items-baseline gap-2.5"><span class="text-5xl font-medium tracking-[-0.04em] text-silk-light">{p.price}</span><span class="text-sm text-soft">{p.unit}</span></div>
-            <div class="h-px bg-silk/15"></div>
-            <ul class="flex flex-col gap-3.5 text-[15px] text-[#DAD6CC]">{p.features.map((f) => <li class="flex gap-3"><Check color="#E6CFA0" />{f}</li>)}</ul>
-            <a href={site.orderFormUrl} data-magnetic class="btn-silk mt-auto justify-center py-4">{p.cta}</a>
+    <div class="mt-16 grid items-stretch gap-4 lg:grid-cols-3">
+      {plans.map((p, i) => (
+        <div data-fade class={`relative flex flex-col gap-7 rounded-2xl border p-7 md:p-8 ${p.featured ? 'border-coal bg-coal text-paper' : 'border-coal/15 bg-white'}`}>
+          <div class="flex items-center justify-between text-[11px] uppercase tracking-[0.2em] opacity-60"><span>0{i + 1}</span>{p.featured && <span class="rounded-full bg-pink px-2.5 py-1 tracking-[0.12em] text-white opacity-100">önerilen</span>}</div>
+          <div>
+            <h3 class="display text-4xl">{p.name}<span class="dot">.</span></h3>
+            <p class={`mt-3 text-[13px] leading-relaxed ${p.featured ? 'text-paper/65' : 'text-coal/60'}`}>{p.blurb}</p>
           </div>
+          <div class="flex items-baseline gap-2"><span class="display text-4xl">{p.price}</span><span class="text-[12px] opacity-60">{p.unit}</span></div>
+          <ul class={`flex flex-col gap-2.5 border-t pt-6 text-[13px] ${p.featured ? 'border-white/10 text-paper/80' : 'border-coal/10 text-coal/75'}`}>
+            {p.features.map((f) => <li class="flex gap-3"><span class={p.featured ? 'text-pink' : 'text-coal/35'}>—</span>{f}</li>)}
+          </ul>
+          <a href={site.orderFormUrl} class={`mt-auto justify-center ${p.featured ? 'btn-pink' : 'btn-line'}`}>{p.cta}</a>
         </div>
-      ) : (
-        <div data-tilt="4" class="spot flex flex-col gap-7 rounded-3xl border border-white/[0.08] bg-panel/80 p-9 md:p-10">
-          <div class="flex flex-col gap-2"><h3 class="text-2xl font-medium">{p.name}</h3><p class="text-[15px] leading-normal text-muted">{p.blurb}</p></div>
-          <div class="flex items-baseline gap-2.5"><span class="text-5xl font-medium tracking-[-0.04em]">{p.price}</span><span class="text-sm text-muted">{p.unit}</span></div>
-          <div class="h-px bg-white/[0.08]"></div>
-          <ul class="flex flex-col gap-3.5 text-[15px] text-[#C9CDC9]">{p.features.map((f) => <li class="flex gap-3"><Check />{f}</li>)}</ul>
-          <a href={site.orderFormUrl} class="btn-ghost mt-auto justify-center py-4">{p.cta}</a>
-        </div>
-      ),
-    )}
+      ))}
+    </div>
   </div>
-  <p class="reveal mt-8 text-center text-sm text-faint">Paket dışı istekler (ek sayfa, e-ticaret, özel yazılım) sipariş öncesi yazılı olarak fiyatlandırılır.</p>
 </section>
