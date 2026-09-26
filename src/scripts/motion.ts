@@ -23,6 +23,32 @@ const onScroll = () => {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
+/* ---------- Fill buttons: a circle grows from where the cursor enters, shrinks toward where it leaves ---------- */
+document.querySelectorAll<HTMLElement>('[data-fill-btn]').forEach((btn) => {
+  const fill = btn.querySelector<HTMLElement>('[data-fill]');
+  if (!fill) return;
+  const place = (e: PointerEvent) => {
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    // big enough to cover the button from any corner
+    const d = 2 * Math.hypot(Math.max(x, r.width - x), Math.max(y, r.height - y));
+    fill.style.width = fill.style.height = `${d}px`;
+    fill.style.left = `${x - d / 2}px`;
+    fill.style.top = `${y - d / 2}px`;
+  };
+  const dur = reduce ? 0 : 0.5;
+  btn.addEventListener('pointerenter', (e) => {
+    if (e.pointerType === 'touch') return;
+    place(e);
+    gsap.fromTo(fill, { scale: 0 }, { scale: 1, duration: dur, ease: 'power3.out', overwrite: true });
+  });
+  btn.addEventListener('pointerleave', (e) => {
+    if (e.pointerType === 'touch') return;
+    place(e);
+    gsap.to(fill, { scale: 0, duration: dur * 0.8, ease: 'power3.out', overwrite: true });
+  });
+});
+
 /* ---------- Canvas helpers ---------- */
 type Loop = { draw: (t: number) => void; canvas: HTMLCanvasElement };
 const loops: Loop[] = [];

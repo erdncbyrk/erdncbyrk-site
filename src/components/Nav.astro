@@ -17,9 +17,12 @@ const links = [
     <nav class="hidden items-center gap-7 text-[11px] uppercase tracking-[0.14em] text-paper/70 lg:flex" aria-label="Ana menü">
       {links.map(([href, label]) => <a href={href} class="transition-colors hover:text-paper">{label}</a>)}
     </nav>
-    <a href={site.whatsappUrl} class="flex items-center gap-2 rounded-full border border-white/15 px-4 py-2 text-[12px] transition-colors hover:border-[#25D366]">
-      <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.3-.7c-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.4 1.8 2.2 1.2 1.1 2.2 1.4 2.5 1.6.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z" /></svg>
-      mesaj at
+    <a href={site.whatsappUrl} data-fill-btn class="relative isolate inline-flex h-9 items-center overflow-hidden rounded-full border border-white/15 px-4 text-[12px] text-paper transition-[color,border-color,transform] duration-[250ms,250ms,140ms] ease-[cubic-bezier(.16,1,.3,1)] hover:scale-[1.02] hover:border-paper/30 hover:text-coal active:scale-[0.98]">
+      <span data-fill aria-hidden="true" class="pointer-events-none absolute left-0 top-0 z-0 rounded-full bg-paper will-change-transform" style="transform: scale(0)"></span>
+      <span class="relative z-[1] inline-flex items-center gap-2">
+        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path fill="#25D366" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1 .3-3.3-.7c-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .5l-.3.5-.4.5c-.2.2-.3.3-.1.6.2.3.8 1.4 1.8 2.2 1.2 1.1 2.2 1.4 2.5 1.6.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z" /></svg>
+        mesaj at
+      </span>
     </a>
   </div>
 </header>
