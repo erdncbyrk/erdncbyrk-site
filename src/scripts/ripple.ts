@@ -5,10 +5,10 @@
 type Ripple = { x: number; y: number; t0: number };
 
 const SPACING = 26;
-const SPEED = 0.55; // px per ms
-const LIFE = 2600; // ms
-const WAVELENGTH = 70; // px
-const AMP = 9; // px of displacement at the wave front
+const SPEED = 0.38; // px per ms
+const LIFE = 3400; // ms
+const WAVELENGTH = 110; // px
+const AMP = 4.5; // px of displacement at the wave front
 
 const INTERACTIVE = 'a, button, input, textarea, select, summary, label, [role="button"], [data-no-ripple]';
 
@@ -42,7 +42,8 @@ export function initRipples(reduce: boolean) {
         for (let k = 0; k < 3; k++) {
           const rad = age * SPEED - k * WAVELENGTH * 0.9;
           if (rad <= 0) continue;
-          const a = (1 - age / LIFE) * (0.16 - k * 0.045);
+          const fade = 1 - age / LIFE;
+          const a = fade * fade * (0.07 - k * 0.02);
           if (a <= 0) continue;
           ctx.strokeStyle = `rgba(240,240,248,${a.toFixed(3)})`;
           ctx.lineWidth = 1;
@@ -64,15 +65,16 @@ export function initRipples(reduce: boolean) {
             const front = age * SPEED;
             const behind = front - d; // >0 once the wave has passed this dot
             if (behind < -WAVELENGTH || behind > WAVELENGTH * 3) continue;
-            const env = Math.exp(-(behind * behind) / (2 * WAVELENGTH * WAVELENGTH)) * (1 - age / LIFE);
+            const fade = 1 - age / LIFE;
+            const env = Math.exp(-(behind * behind) / (2 * WAVELENGTH * WAVELENGTH)) * fade * fade;
             const s = Math.sin((behind / WAVELENGTH) * Math.PI * 2) * AMP * env * Math.min(1, 60 / Math.sqrt(d + 1) / 4 + 0.35);
             dx += (vx / d) * s;
             dy += (vy / d) * s;
             lift += Math.max(0, s) / AMP;
           }
-          const a = Math.min(0.55, 0.085 + lift * 0.35);
+          const a = Math.min(0.3, 0.085 + lift * 0.16);
           ctx.fillStyle = `rgba(240,240,248,${a.toFixed(3)})`;
-          const size = 1.3 + lift * 1.2;
+          const size = 1.3 + lift * 0.5;
           ctx.fillRect(gx + dx - size / 2, gy + dy - size / 2, size, size);
         }
       }
