@@ -49,7 +49,10 @@ const jsonLd = {
   </head>
   <body class="overflow-x-clip">
     <slot />
+    <div class="grain" aria-hidden="true"></div>
+    <div class="cursor-glow" data-cursor aria-hidden="true"></div>
     <script>
+      // Fallback reveal for elements marked .reveal (also works with reduced motion)
       const els = document.querySelectorAll('.reveal');
       if (!('IntersectionObserver' in window)) {
         els.forEach((el) => el.classList.add('in'));
@@ -67,6 +70,9 @@ const jsonLd = {
         );
         els.forEach((el) => io.observe(el));
       }
+    </script>
+    <script>
+      import '../scripts/motion';
     </script>
   </body>
 </html>

@@ -87,6 +87,60 @@
   .tilt:hover { transform: translateY(-6px); }
 }
 
+@layer components {
+  /* Split-word masks used by GSAP heading reveals */
+  .w-mask { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.06em 0.12em; margin: 0 -0.06em -0.12em; }
+  .w { display: inline-block; will-change: transform; }
+
+  /* Pointer spotlight on cards (position set by JS via --mx / --my) */
+  .spot { position: relative; isolation: isolate; transform-style: preserve-3d; }
+  .spot::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 2;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(241, 223, 184, 0.13), transparent 45%);
+    opacity: 0; transition: opacity .4s ease;
+  }
+  .spot:hover::after { opacity: 1; }
+
+  /* Rotating gradient border for the featured plan */
+  .border-spin {
+    background: conic-gradient(from var(--angle), #F6E9CC, rgba(201,164,106,0.15) 25%, rgba(127,209,168,0.5) 50%, rgba(201,164,106,0.15) 75%, #F6E9CC);
+    animation: spin 6s linear infinite;
+  }
+
+  /* PageSpeed ring, value animated through --p */
+  .ring { background: conic-gradient(#7FD1A8 calc(var(--p) * 1%), rgba(255,255,255,0.1) 0); }
+
+  /* Nav condenses after scrolling */
+  .nav-pill { transition: max-width .6s cubic-bezier(.2,.7,.2,1), background-color .4s ease, box-shadow .4s ease; }
+
+  /* Film grain over everything */
+  .grain {
+    position: fixed; inset: -50%; z-index: 70; pointer-events: none; opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1.2s steps(6) infinite;
+  }
+
+  /* Soft light that trails the cursor (desktop only) */
+  .cursor-glow {
+    position: fixed; left: 0; top: 0; z-index: 1; width: 520px; height: 520px; margin: -260px 0 0 -260px;
+    border-radius: 50%; pointer-events: none; opacity: 0;
+    background: radial-gradient(closest-side, rgba(216,183,126,0.10), transparent);
+    transition: opacity .6s ease;
+  }
+  @media (hover: hover) and (pointer: fine) { .motion-on .cursor-glow { opacity: 1; } }
+
+  .drift { animation: drift 18s ease-in-out infinite alternate; }
+  .drift-slow { animation: drift2 26s ease-in-out infinite alternate; }
+}
+
+@property --angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@property --p { syntax: "<number>"; initial-value: 96; inherits: false; }
+@keyframes spin { to { --angle: 360deg; } }
+@keyframes grain { 0% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); } 60% { transform: translate(-2%,-1%); } 80% { transform: translate(3%,3%); } 100% { transform: translate(0,0); } }
+@keyframes drift { from { translate: -50% 0; transform: scale(1); } to { translate: -46% 60px; transform: scale(1.12); } }
+
+@keyframes drift2 { from { translate: 0 0; transform: scale(1); } to { translate: -90px 70px; transform: scale(1.15); } }
+
 @keyframes sheen { 0%, 100% { background-position: 0% 0; } 50% { background-position: 100% 0; } }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -95,6 +149,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .silk, .marquee-track, .float, .float-slow { animation: none; }
+  .silk, .marquee-track, .float, .float-slow, .border-spin, .grain, .drift, .drift-slow { animation: none; }
   .js .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* Unlayered so it beats the Tailwind max-w utility */
+[data-nav].is-scrolled .nav-pill { max-width: 900px; background-color: rgba(12, 15, 13, 0.82); box-shadow: 0 20px 50px -20px rgba(0,0,0,0.8); }

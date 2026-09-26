@@ -2,15 +2,15 @@
 import Arrow from './Arrow.astro';
 ---
 <section id="calismalar" class="relative mx-auto max-w-[1200px] scroll-mt-28 px-4 pt-32 md:pt-44">
-  <div class="reveal flex flex-col justify-between gap-6 md:flex-row md:items-end">
-    <h2 class="max-w-[780px] text-[clamp(38px,5vw,64px)] font-medium leading-[1.02] tracking-[-0.035em]">Sektörünüze göre <span class="accent">hazır tasarımlar.</span></h2>
+  <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <h2 data-split class="max-w-[780px] text-[clamp(38px,5vw,64px)] font-medium leading-[1.02] tracking-[-0.035em]">Sektörünüze göre <span class="accent">hazır tasarımlar.</span></h2>
     <p class="max-w-[340px] text-[17px] leading-relaxed text-muted">Her örnek canlı ve çalışır durumda. Telefonunuzda açın, hızını kendiniz ölçün.</p>
   </div>
 
-  <div class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-12">
+  <div data-stagger class="mt-14 grid grid-cols-1 gap-5 md:grid-cols-12">
     <!-- Tadilat -->
-    <a href="#" class="reveal tilt group flex flex-col gap-5 md:col-span-7">
-      <div class="flex h-[380px] flex-col gap-4 overflow-hidden rounded-[22px] border border-white/10 p-8 text-[#F4EFE6] md:h-[460px] md:p-11" style="background: linear-gradient(150deg,#4A443A,#1C1B18 65%)">
+    <a href="#" class="group flex flex-col gap-5 md:col-span-7">
+      <div data-tilt="7" class="spot flex h-[380px] flex-col gap-4 overflow-hidden rounded-[22px] border border-white/10 p-8 text-[#F4EFE6] md:h-[460px] md:p-11" style="background: linear-gradient(150deg,#4A443A,#1C1B18 65%)">
         <span class="text-xs font-bold tracking-[0.1em]">USTA YAPI</span>
         <span class="max-w-[9em] pt-6 text-4xl font-semibold leading-none tracking-tight md:text-[52px]">Evinizi baştan yapıyoruz. <span class="font-serif font-normal italic text-[#E8A33D]">Anahtar teslim.</span></span>
         <div class="mt-auto grid grid-cols-3 gap-3"><i class="h-24 rounded-[10px] bg-[#6B6254] md:h-28"></i><i class="h-24 rounded-[10px] bg-[#8A7E6B] md:h-28"></i><i class="h-24 rounded-[10px] bg-[#574F43] md:h-28"></i></div>
@@ -19,8 +19,8 @@ import Arrow from './Arrow.astro';
     </a>
 
     <!-- Psikolog -->
-    <a href="#" class="reveal tilt group flex flex-col gap-5 md:col-span-5">
-      <div class="flex h-[380px] flex-col gap-4 overflow-hidden rounded-[22px] border border-white/10 bg-[#F4EEE8] p-8 text-[#3A2F2A] md:h-[460px] md:p-11">
+    <a href="#" class="group flex flex-col gap-5 md:col-span-5">
+      <div data-tilt="7" class="spot flex h-[380px] flex-col gap-4 overflow-hidden rounded-[22px] border border-white/10 bg-[#F4EEE8] p-8 text-[#3A2F2A] md:h-[460px] md:p-11">
         <span class="text-xs text-[#7A6B62]">Uzm. Psk. Ayşe Demir</span>
         <span class="pt-4 font-serif text-5xl leading-[0.98] md:text-[54px]">Kendinize ayırdığınız bir saat.</span>
         <span class="self-start rounded-full bg-[#6C4F43] px-4 py-2.5 text-[13px] font-semibold text-white">Randevu al</span>
@@ -30,8 +30,8 @@ import Arrow from './Arrow.astro';
     </a>
 
     <!-- Nakliye -->
-    <a href="#" class="reveal tilt group flex flex-col gap-5 md:col-span-5">
-      <div class="flex h-[360px] flex-col gap-4 overflow-hidden rounded-[22px] border border-white/10 p-8 text-[#EAF1F8] md:h-[400px] md:p-10" style="background: linear-gradient(160deg,#1E5B93,#0F2D4A 70%)">
+    <a href="#" class="group flex flex-col gap-5 md:col-span-5">
+      <div data-tilt="7" class="spot flex h-[360px] flex-col gap-4 overflow-hidden rounded-[22px] border border-white/10 p-8 text-[#EAF1F8] md:h-[400px] md:p-10" style="background: linear-gradient(160deg,#1E5B93,#0F2D4A 70%)">
         <span class="text-xs text-[#A9BDD1]">Hızlı Taşı Nakliyat</span>
         <span class="text-4xl font-semibold leading-[1.02] tracking-tight">Eşyalarınız sigortalı, taşıma tek fiyat.</span>
         <div class="mt-auto flex flex-col gap-2.5 rounded-[14px] border border-[#EAF1F8]/20 bg-[#EAF1F8]/10 p-4"><span class="text-[13px] font-semibold">Fiyat hesapla</span><div class="grid grid-cols-3 gap-2"><i class="h-[34px] rounded-lg bg-white/90"></i><i class="h-[34px] rounded-lg bg-white/90"></i><i class="h-[34px] rounded-lg bg-[#F2B544]"></i></div></div>
@@ -40,8 +40,8 @@ import Arrow from './Arrow.astro';
     </a>
 
     <!-- Klinik -->
-    <a href="#" class="reveal tilt group flex flex-col gap-5 md:col-span-7">
-      <div class="grid h-[360px] grid-cols-1 gap-7 overflow-hidden rounded-[22px] border border-white/10 bg-[#EEF3F2] p-8 text-[#10302C] sm:grid-cols-[1fr_220px] md:h-[400px] md:p-10">
+    <a href="#" class="group flex flex-col gap-5 md:col-span-7">
+      <div data-tilt="7" class="spot grid h-[360px] grid-cols-1 gap-7 overflow-hidden rounded-[22px] border border-white/10 bg-[#EEF3F2] p-8 text-[#10302C] sm:grid-cols-[1fr_220px] md:h-[400px] md:p-10">
         <div class="flex flex-col gap-4"><span class="text-xs text-[#4F6B66]">Gülüş Diş Kliniği</span><span class="text-4xl font-semibold leading-none tracking-tight md:text-[44px]">Rahat bir tedavi, net bir fiyat.</span><span class="self-start rounded-full bg-[#0E7C6B] px-4 py-2.5 text-[13px] font-semibold text-white">Online randevu</span></div>
         <div class="hidden flex-col gap-2.5 sm:flex"><i class="grow rounded-[14px] bg-[#CFE1DD]"></i><div class="flex flex-col gap-1.5 rounded-xl bg-white p-3.5"><span class="text-xs font-semibold">Pzt, 14:30 müsait</span><i class="h-1.5 rounded bg-[#CFE1DD]"></i></div></div>
       </div>
