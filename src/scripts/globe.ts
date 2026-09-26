@@ -51,17 +51,64 @@ export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null
     { tiltX: 0.95, tiltZ: 0.9, r: 1.12 },
   ];
 
+  // ---- rotation state: auto spin + drag with inertia + a little mouse parallax ----
   let yaw = -0.5, pitch = 0.42; // start with Türkiye facing us
+  let vYaw = 0, vPitch = 0; // radians per ms, from dragging
+  let offYaw = 0, offPitch = 0; // parallax offset (not accumulated)
+  let dragging = false, lastX = 0, lastY = 0, lastMoveT = 0, lastT = 0;
+  const AUTO = -0.00004; // gentle westward spin
+  const SENS = 0.0055; // radians per pixel dragged (scaled by globe size below)
+  let sens = SENS;
+
+  canvas.style.cursor = 'grab';
+  canvas.style.touchAction = 'pan-y'; // vertical swipes still scroll the page on phones
+  canvas.addEventListener('pointerdown', (e) => {
+    dragging = true;
+    lastX = e.clientX; lastY = e.clientY; lastMoveT = performance.now();
+    vYaw = vPitch = 0;
+    canvas.setPointerCapture(e.pointerId);
+    canvas.style.cursor = 'grabbing';
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    const now = performance.now();
+    const dx = e.clientX - lastX, dy = e.clientY - lastY, dt = Math.max(1, now - lastMoveT);
+    yaw += dx * sens;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * sens));
+    vYaw = (dx * sens) / dt;
+    vPitch = (dy * sens) / dt;
+    lastX = e.clientX; lastY = e.clientY; lastMoveT = now;
+  });
+  const end = (e: PointerEvent) => {
+    if (!dragging) return;
+    dragging = false;
+    if (performance.now() - lastMoveT > 80) vYaw = vPitch = 0; // released without flicking
+    canvas.style.cursor = 'grab';
+    if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+  };
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', end);
+
   return (t: number) => {
-    const R = Math.min(w / 2.9, h / 2.75);
+    const R = Math.min(w / 2.7, h / 2.6);
+    sens = 1.6 / Math.max(120, R); // same feel at any globe size
     const cx = w / 2, cy = h / 2;
     ctx.clearRect(0, 0, w, h);
 
-    const targetYaw = -0.5 - t * 0.00004 + mouse.nx * 0.5;
-    const targetPitch = 0.42 + mouse.ny * 0.3;
-    yaw += (targetYaw - yaw) * 0.05;
-    pitch += (targetPitch - pitch) * 0.05;
-    const cyw = Math.cos(yaw), syw = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const dt = lastT ? Math.min(50, t - lastT) : 16;
+    lastT = t;
+    if (!dragging) {
+      yaw += (AUTO + vYaw) * dt;
+      pitch = Math.max(-1.2, Math.min(1.2, pitch + vPitch * dt));
+      const decay = Math.pow(0.94, dt / 16);
+      vYaw *= decay; vPitch *= decay;
+      // ease pitch back toward a pleasant tilt once the flick has died down
+      if (Math.abs(vPitch) < 1e-5) pitch += (0.42 - pitch) * 0.01;
+      offYaw += (mouse.nx * 0.18 - offYaw) * 0.05;
+      offPitch += (mouse.ny * 0.12 - offPitch) * 0.05;
+    }
+    const Y = yaw + offYaw, P = pitch + offPitch;
+    const cyw = Math.cos(Y), syw = Math.sin(Y), cp = Math.cos(P), sp = Math.sin(P);
     const rot = (v: Vec): Vec => {
       const x = v[0] * cyw + v[2] * syw, z = -v[0] * syw + v[2] * cyw;
       return [x, v[1] * cp - z * sp, v[1] * sp + z * cp];
