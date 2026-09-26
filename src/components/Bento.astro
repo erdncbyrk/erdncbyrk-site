@@ -1,0 +1,81 @@
+---
+const bars = [
+  { h: 36, label: 'Form', style: 'background: rgba(241,223,184,0.9)' },
+  { h: 54, label: 'G2', style: 'background: rgba(241,223,184,0.55)' },
+  { h: 90, label: 'Önizleme', style: 'background: linear-gradient(180deg,#F6E9CC,#C9A46A)', hl: 'silk' },
+  { h: 62, label: 'G4', style: 'background: rgba(241,223,184,0.4)' },
+  { h: 70, label: 'G5', style: 'background: rgba(241,223,184,0.4)' },
+  { h: 76, label: 'G6', style: 'background: rgba(241,223,184,0.4)' },
+  { h: 110, label: 'Yayında', style: 'background: linear-gradient(180deg,#9BE0BD,#2E6B54); box-shadow: 0 0 40px -6px rgba(127,209,168,0.5)', hl: 'mint' },
+];
+---
+<section class="relative mx-auto max-w-[1200px] px-4 pt-28 md:pt-40">
+  <div class="reveal flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <h2 class="max-w-[760px] text-[clamp(38px,5vw,64px)] font-medium leading-[1.02] tracking-[-0.035em]">Ajans kalitesi, <span class="accent">esnaf sadeliğinde.</span></h2>
+    <p class="max-w-[340px] text-[17px] leading-relaxed text-muted">Büyük markaların sitelerinde gördüğünüz özen, küçük bir işletmenin bütçesine ve temposuna göre paketlendi.</p>
+  </div>
+
+  <div class="mt-14 grid grid-cols-1 gap-4 md:grid-cols-6 md:auto-rows-[290px]">
+    <!-- 7 gün -->
+    <div class="reveal card flex flex-col justify-between gap-8 p-8 md:col-span-4 md:p-9" style="background: linear-gradient(160deg,#141816,#0F1211)">
+      <div class="flex max-w-[420px] flex-col gap-2.5"><span class="eyebrow">Teslim</span><h3 class="text-3xl font-medium tracking-tight">Formdan yayına 7 gün.</h3><p class="text-[15px] leading-relaxed text-muted">3. günde çalışan önizleme, 7. günde kendi alan adınızda yayında.</p></div>
+      <div class="grid grid-cols-7 items-end gap-2" aria-hidden="true">
+        {bars.map((b) => (
+          <div class="flex flex-col gap-2">
+            <span class="rounded-lg" style={`height:${b.h}px;${b.style}`}></span>
+            <span class={`truncate font-mono text-[11px] ${b.hl === 'silk' ? 'text-silk' : b.hl === 'mint' ? 'text-mint' : 'text-muted'}`}>{b.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Sabit fiyat -->
+    <div class="reveal card flex flex-col justify-between gap-6 p-8 md:col-span-2">
+      <div class="flex flex-col gap-2.5"><span class="eyebrow">Fiyat</span><h3 class="text-[26px] font-medium tracking-tight">Sabit. Sayfada yazar.</h3></div>
+      <div class="flex flex-col gap-2.5 text-sm">
+        <div class="flex justify-between rounded-[10px] bg-white/[0.04] px-3.5 py-3"><span class="text-muted">Pazarlık</span><span class="text-muted line-through">var</span></div>
+        <div class="flex justify-between rounded-[10px] bg-white/[0.04] px-3.5 py-3"><span class="text-muted">Sürpriz ücret</span><span class="text-muted line-through">var</span></div>
+        <div class="flex justify-between rounded-[10px] border border-silk/25 bg-silk/10 px-3.5 py-3"><span>Toplam</span><span class="font-mono text-silk">Paket fiyatı</span></div>
+      </div>
+    </div>
+
+    <!-- Google -->
+    <div class="reveal card flex flex-col justify-between gap-6 p-8 md:col-span-3">
+      <div class="flex flex-col gap-2.5"><span class="eyebrow">Görünürlük</span><h3 class="text-[26px] font-medium tracking-tight">Google’da ve yapay zekâ aramalarında bulunur.</h3></div>
+      <div class="flex flex-col gap-2.5 rounded-[14px] bg-paper px-4 py-4 text-[#1A1C1B]" aria-hidden="true">
+        <div class="flex items-center gap-2.5 rounded-full border border-[#D8D6D0] bg-white px-3.5 py-2 text-[13px] text-[#5A5E5B]"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5A5E5B" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="M20 20l-4-4" /></svg>bursa daire tadilatı</div>
+        <div class="flex flex-col gap-0.5"><span class="text-xs text-[#4F6B5E]">ustayapi.com.tr</span><span class="text-base font-medium text-[#1F4E9C]">Usta Yapı · Bursa’da anahtar teslim tadilat</span><span class="text-[12.5px] text-[#5A5E5B]">Nilüfer · Açık · Ücretsiz keşif</span></div>
+      </div>
+    </div>
+
+    <!-- Mobil -->
+    <div class="reveal card flex gap-6 overflow-hidden px-8 pt-8 md:col-span-3">
+      <div class="flex grow flex-col gap-2.5 pb-8"><span class="eyebrow">Mobil</span><h3 class="text-[26px] font-medium tracking-tight">Önce telefon için tasarlanır.</h3><p class="text-[15px] leading-relaxed text-muted">Arama ve WhatsApp butonu her ekranda başparmağın altında.</p></div>
+      <div class="hidden h-[240px] w-[170px] shrink-0 self-end rounded-t-[28px] border border-b-0 border-white/15 bg-[#0D0E0D] px-2 pt-2 sm:block" aria-hidden="true">
+        <div class="flex h-full flex-col gap-2 rounded-t-[21px] bg-[#F4EEE8] px-3 py-4 text-[#3A2F2A]"><span class="font-serif text-xl leading-none">Kendinize bir saat.</span><i class="h-[70px] rounded-[10px] bg-[#D9C9BD]"></i><span class="mt-auto flex gap-1.5"><i class="h-[30px] grow rounded-full bg-[#6C4F43]"></i><i class="size-[30px] rounded-full bg-[#25D366]"></i></span></div>
+      </div>
+    </div>
+
+    <!-- Sahiplik -->
+    <div class="reveal card flex flex-col justify-between gap-6 p-8 md:col-span-2">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#E6CFA0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4" /><path d="M10.8 12.2L20 3M16 7l3 3M14 9l2 2" /></svg>
+      <div class="flex flex-col gap-2.5"><h3 class="text-2xl font-medium tracking-tight">Site ve alan adı sizin.</h3><p class="text-[15px] leading-relaxed text-muted">Kayıt sizin adınıza yapılır, tüm giriş bilgileri teslimde verilir.</p></div>
+    </div>
+
+    <!-- Toplantısız -->
+    <div class="reveal card flex flex-col justify-between gap-6 p-8 md:col-span-2">
+      <div class="flex flex-col gap-2 text-[13px]" aria-hidden="true">
+        <div class="flex h-[34px] items-center rounded-lg border border-white/[0.08] bg-white/5 px-3 text-muted">İşletme adı</div>
+        <div class="flex h-[34px] items-center rounded-lg border border-white/[0.08] bg-white/5 px-3 text-muted">Hizmetleriniz</div>
+        <div class="flex h-[34px] items-center rounded-lg border border-dashed border-silk/35 bg-white/5 px-3 text-[#E6CFA0]">+ Logo ve fotoğraflar</div>
+      </div>
+      <div class="flex flex-col gap-2.5"><h3 class="text-2xl font-medium tracking-tight">Toplantı yok, tek form.</h3><p class="text-[15px] leading-relaxed text-muted">10 dakikada doldurursunuz, gerisi benden.</p></div>
+    </div>
+
+    <!-- 2 tur -->
+    <div class="reveal flex flex-col justify-between gap-6 rounded-[22px] border border-mint/20 p-8 md:col-span-2" style="background: linear-gradient(160deg, rgba(46,107,84,0.35), #141816 70%)">
+      <span class="font-serif text-[76px] leading-[0.9] text-[#BFE8D2]">2 tur</span>
+      <div class="flex flex-col gap-2.5"><h3 class="text-2xl font-medium tracking-tight">Düzeltme dahil.</h3><p class="text-[15px] leading-relaxed text-soft">Değişiklikleri tek listede iletirsiniz, sınırlar baştan net.</p></div>
+    </div>
+  </div>
+</section>

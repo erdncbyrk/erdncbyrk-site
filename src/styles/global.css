@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0A0C0B;
+  --color-panel: #141816;
+  --color-panel-2: #0F1211;
+  --color-paper: #EDEAE3;
+  --color-soft: #A7ADA9;
+  --color-muted: #8C918D;
+  --color-faint: #6F7571;
+  --color-silk: #F1DFB8;
+  --color-silk-light: #F6E9CC;
+  --color-silk-deep: #D8B77E;
+  --color-gold: #C9A46A;
+  --color-mint: #7FD1A8;
+  --color-bursa: #2E6B54;
+
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, Menlo, monospace;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; background: var(--color-ink); color-scheme: dark; overflow-x: clip; }
+  body {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 { text-wrap: balance; }
+  ::selection { background: var(--color-silk-deep); color: var(--color-ink); }
+  :focus-visible { outline: 2px solid var(--color-silk); outline-offset: 3px; border-radius: 6px; }
+}
+
+@layer components {
+  /* Serif italic accent with the silk sheen */
+  .silk {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    background: linear-gradient(100deg, #F6E9CC 0%, #D8B77E 45%, #F1DFB8 70%, #B58D52 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: sheen 8s ease-in-out infinite;
+  }
+  .accent { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: #E6CFA0; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-muted); }
+
+  .glass {
+    background: rgba(20, 24, 22, 0.66);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .card { background: var(--color-panel); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 22px; }
+
+  .btn-silk {
+    display: inline-flex; align-items: center; gap: 10px;
+    border-radius: 999px; font-weight: 600; color: #17130B;
+    background: linear-gradient(180deg, #F6E9CC, #D8B77E);
+    box-shadow: 0 10px 40px -10px rgba(216, 183, 126, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-silk:hover { transform: translateY(-1px); box-shadow: 0 16px 50px -10px rgba(216, 183, 126, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: 999px; font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.03);
+    transition: border-color .25s ease, background .25s ease;
+  }
+  .btn-ghost:hover { border-color: rgba(241, 223, 184, 0.45); background: rgba(241, 223, 184, 0.06); }
+
+  .glow { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(0); }
+
+  /* Scroll reveal: content is visible by default; JS opts in */
+  .js .reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1); }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  .marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+  .tilt { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+  .tilt:hover { transform: translateY(-6px); }
+}
+
+@keyframes sheen { 0%, 100% { background-position: 0% 0; } 50% { background-position: 100% 0; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.float { animation: float 6s ease-in-out infinite; }
+.float-slow { animation: float 8s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .silk, .marquee-track, .float, .float-slow { animation: none; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+}

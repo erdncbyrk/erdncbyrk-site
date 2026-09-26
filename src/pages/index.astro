@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Bento from '../components/Bento.astro';
+import Work from '../components/Work.astro';
+import Packages from '../components/Packages.astro';
+import Process from '../components/Process.astro';
+import About from '../components/About.astro';
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+---
+<Base>
+  <!-- Ambient background -->
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-[1400px] overflow-hidden" aria-hidden="true">
+    <div class="glow left-1/2 top-[-260px] h-[900px] w-[1080px] -translate-x-1/2" style="background: radial-gradient(closest-side, rgba(46,107,84,0.45), transparent)"></div>
+    <div class="glow right-[-200px] top-[380px] h-[600px] w-[700px]" style="background: radial-gradient(closest-side, rgba(201,164,106,0.18), transparent)"></div>
+    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 72px 72px; -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 70%); mask-image: radial-gradient(ellipse at 50% 20%, #000 20%, transparent 70%);"></div>
+  </div>
+  <Nav />
+  <main class="relative">
+    <Hero />
+    <Marquee />
+    <Bento />
+    <Work />
+    <Packages />
+    <Process />
+    <About />
+    <Faq />
+  </main>
+  <Footer />
+</Base>

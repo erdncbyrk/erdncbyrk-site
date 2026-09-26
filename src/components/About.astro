@@ -1,0 +1,19 @@
+---
+import { site } from '../data/site';
+---
+<section id="hakkimda" class="relative mx-auto grid max-w-[1200px] scroll-mt-28 grid-cols-1 items-center gap-12 px-4 pt-32 md:pt-44 lg:grid-cols-[460px_1fr] lg:gap-20">
+  <div class="reveal relative flex h-[440px] items-end overflow-hidden rounded-[26px] border border-white/[0.08] p-6 md:h-[560px]" style="background: linear-gradient(170deg,#2A2E2B,#151816)">
+    <!-- TODO: gerçek fotoğrafı public/erdinc.jpg olarak ekleyip bu yer tutucuyu <img> ile değiştir -->
+    <span class="absolute inset-0 flex items-center justify-center font-mono text-[13px] text-faint">[Gerçek, doğal ışıkta fotoğrafınız]</span>
+    <span class="glass relative flex items-center gap-2.5 rounded-full px-3.5 py-2.5 text-[13px]"><span class="size-[7px] rounded-full bg-mint"></span>Bursa · 2018’den beri teknik işlerde</span>
+  </div>
+  <div class="reveal flex flex-col gap-7">
+    <span class="eyebrow">Hakkımda</span>
+    <p class="font-serif text-[clamp(34px,4vw,52px)] leading-[1.08] tracking-[-0.01em]">“Yıllarca insanların teknik sorunlarını çözdüm. Şimdi aynı özeni küçük işletmelerin <span class="italic text-[#E6CFA0]">ilk izlenimine</span> taşıyorum.”</p>
+    <p class="max-w-[600px] text-[17px] leading-[1.65] text-soft">Merhaba, ben Erdinç. IT destek uzmanı olarak başladım; C#, ASP.NET Core ve MSSQL ile çok oyunculu bir oyunun web platformunu geliştirdim. Sitelerinizi aynı mühendislik disipliniyle, hızlı ve sağlam kuruyorum.</p>
+    <div class="flex flex-wrap gap-3">
+      <a href={site.projectUrl} class="btn-ghost px-5 py-3 text-sm">Atum Rivals projesi ↗</a>
+      <a href={site.cvUrl} class="btn-ghost px-5 py-3 text-sm">Özgeçmiş ↓</a>
+    </div>
+  </div>
+</section>
