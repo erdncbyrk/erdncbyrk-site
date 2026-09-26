@@ -2,8 +2,9 @@
 import { site, facts, sectors } from '../data/site';
 const row = [...sectors, ...sectors];
 ---
-<section class="dotgrid relative overflow-hidden px-4 pb-16 pt-28 md:pt-24">
-  <!-- wireframe globe -->
+<section class="dotgrid relative isolate overflow-hidden px-4 pb-16 pt-28 md:pt-24">
+  <canvas data-ripple class="pointer-events-none absolute left-0 top-0" aria-hidden="true"></canvas>
+  <!-- dotted globe -->
   <div class="relative mx-auto flex h-[62vh] min-h-[360px] max-w-[1400px] items-center justify-center md:h-[84vh] md:min-h-[640px]">
     <canvas data-globe class="h-full w-full max-w-[1100px] select-none" aria-hidden="true"></canvas>
     <span data-globe-label class="pointer-events-none absolute left-0 top-0 flex items-center gap-2 whitespace-nowrap rounded-full border border-white/12 bg-coal/80 px-3 py-1.5 text-[10px] uppercase tracking-[0.16em] text-paper/80 opacity-0 backdrop-blur transition-opacity duration-300" aria-hidden="true"><i class="size-1.5 rounded-full bg-pink"></i>online · bursa</span>

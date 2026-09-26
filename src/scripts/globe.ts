@@ -60,9 +60,19 @@ export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null
   const SENS = 0.0055; // radians per pixel dragged (scaled by globe size below)
   let sens = SENS;
 
-  canvas.style.cursor = 'grab';
+  let curR = 0;
+  // only the sphere itself is draggable; the empty corners of the canvas belong to the background
+  const onSphere = (e: PointerEvent) => {
+    const r = canvas.getBoundingClientRect();
+    return Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) <= curR * 1.04;
+  };
+  (canvas as HTMLCanvasElement & { onSphere?: (e: PointerEvent) => boolean }).onSphere = onSphere;
   canvas.style.touchAction = 'pan-y'; // vertical swipes still scroll the page on phones
+  canvas.addEventListener('pointermove', (e) => {
+    if (!dragging) canvas.style.cursor = onSphere(e) ? 'grab' : '';
+  });
   canvas.addEventListener('pointerdown', (e) => {
+    if (!onSphere(e)) return;
     dragging = true;
     lastX = e.clientX; lastY = e.clientY; lastMoveT = performance.now();
     vYaw = vPitch = 0;
@@ -91,6 +101,7 @@ export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null
 
   return (t: number) => {
     const R = Math.min(w / 2.7, h / 2.6);
+    curR = R;
     sens = 1.6 / Math.max(120, R); // same feel at any globe size
     const cx = w / 2, cy = h / 2;
     ctx.clearRect(0, 0, w, h);

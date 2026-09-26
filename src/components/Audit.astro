@@ -1,14 +1,15 @@
 ---
 import { frictions } from '../data/site';
 ---
-<section id="teshis" class="dotgrid relative scroll-mt-20 px-4 py-28 md:py-40">
-  <div class="mx-auto flex max-w-[1000px] flex-col items-center text-center">
+<section id="teshis" class="dotgrid relative isolate scroll-mt-20 overflow-hidden px-4 py-28 md:py-40">
+  <canvas data-ripple class="pointer-events-none absolute left-0 top-0" aria-hidden="true"></canvas>
+  <div class="relative mx-auto flex max-w-[1000px] flex-col items-center text-center">
     <span class="label">[ Teşhis ]</span>
     <h2 data-scramble class="display mt-6 text-[clamp(38px,6.2vw,84px)]">Sizi ne yavaşlatıyor?</h2>
     <p class="mt-6 min-h-[1.6em] text-sm text-paper/70 md:text-base"><span data-type="Sorunu siz seçin. Çözümü ben yazayım.">Sorunu siz seçin. Çözümü ben yazayım.</span></p>
   </div>
 
-  <div data-audit class="mx-auto mt-14 grid max-w-[1000px] gap-6 lg:grid-cols-[1fr_1.1fr]">
+  <div data-audit class="relative mx-auto mt-14 grid max-w-[1000px] gap-6 lg:grid-cols-[1fr_1.1fr]">
     <div class="flex flex-wrap content-start gap-2.5" role="group" aria-label="Sorunlar">
       {frictions.map((f, i) => (
         <button type="button" data-q={i} aria-pressed={i === 0 ? 'true' : 'false'} class="rounded-full border border-white/15 px-4 py-2.5 text-left text-[13px] text-paper/75 transition-colors hover:border-white/40 hover:text-paper aria-pressed:border-pink aria-pressed:bg-pink/10 aria-pressed:text-paper">
