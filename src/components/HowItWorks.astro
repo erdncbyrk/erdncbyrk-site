@@ -1,0 +1,135 @@
+---
+import { steps } from '../data/site';
+import Icon from './Icon.astro';
+---
+<section id="surec" class="relative mx-auto max-w-[1180px] scroll-mt-24 px-4 py-24 md:py-32">
+  <div class="flex flex-col items-center gap-5 text-center">
+    <span class="chip">Nasıl çalışır</span>
+    <h2 data-fade class="text-[clamp(34px,4vw,56px)] leading-[1.08]">Formdan yayına dört adım</h2>
+    <p data-fade class="max-w-[520px] text-muted">Toplantı yok, telefon trafiği yok. Her adımda ne olacağı baştan belli.</p>
+  </div>
+
+  <div data-tabs class="mt-14 grid gap-6 lg:grid-cols-[400px_1fr] lg:gap-10">
+    <div role="tablist" aria-label="Süreç adımları" class="flex flex-col gap-2">
+      {steps.map((s, i) => (
+        <button role="tab" id={`tab-${i}`} aria-controls={`pane-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="tab group relative overflow-hidden rounded-2xl border border-transparent p-5 text-left transition-colors aria-selected:border-white/[0.08] aria-selected:bg-white/[0.035]">
+          <span class="flex items-center gap-3">
+            <span class="text-xs text-violet">{s.day}</span>
+          </span>
+          <span class="mt-1.5 block text-lg text-soft transition-colors group-aria-selected:text-paper">{s.title}</span>
+          <span class="grid transition-[grid-template-rows] duration-500 [grid-template-rows:0fr] group-aria-selected:[grid-template-rows:1fr]">
+            <span class="overflow-hidden"><span class="block pt-2 text-sm leading-relaxed text-muted">{s.text}</span></span>
+          </span>
+          <span class="absolute inset-x-5 bottom-0 h-px bg-white/[0.06]"><span class="tab-bar block h-full bg-violet"></span></span>
+        </button>
+      ))}
+    </div>
+
+    <div class="panel relative min-h-[420px] overflow-hidden p-4 md:p-6">
+      <div class="orb -right-40 -top-40 h-[420px] w-[420px]" style="background: radial-gradient(closest-side, rgba(91,69,240,0.35), transparent)" aria-hidden="true"></div>
+
+      <!-- 0: form -->
+      <div role="tabpanel" id="pane-0" aria-labelledby="tab-0" class="tabpane relative">
+        <div class="mx-auto max-w-[460px] rounded-xl border border-white/10 bg-[#0D0A28] p-5">
+          <div class="flex items-center justify-between"><span class="text-sm">Sipariş formu</span><span class="text-xs text-dim">Adım 2 / 4</span></div>
+          <div class="mt-3 h-1 rounded-full bg-white/[0.06]"><div class="h-full w-1/2 rounded-full bg-violet"></div></div>
+          <div class="mt-5 grid gap-3 text-sm">
+            <label class="grid gap-1.5"><span class="text-xs text-muted">İşletme adı</span><span class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5">Usta Yapı</span></label>
+            <label class="grid gap-1.5"><span class="text-xs text-muted">Hizmetleriniz</span><span class="flex flex-wrap gap-1.5 rounded-lg border border-white/10 bg-white/[0.03] px-2 py-2"><span class="rounded-md bg-violet/20 px-2 py-0.5 text-xs text-[#CFC7FF]">Daire tadilatı</span><span class="rounded-md bg-violet/20 px-2 py-0.5 text-xs text-[#CFC7FF]">Mutfak</span><span class="rounded-md bg-violet/20 px-2 py-0.5 text-xs text-[#CFC7FF]">Banyo</span><span class="px-1 text-xs text-dim">+ ekle</span></span></label>
+            <label class="grid gap-1.5"><span class="text-xs text-muted">Hizmet bölgesi</span><span class="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5">Nilüfer, Osmangazi, Mudanya</span></label>
+            <div class="grid grid-cols-3 gap-2"><span class="aspect-square rounded-lg bg-[linear-gradient(135deg,#3a3350,#1b1638)]"></span><span class="aspect-square rounded-lg bg-[linear-gradient(135deg,#2e3a4f,#171a38)]"></span><span class="flex aspect-square items-center justify-center rounded-lg border border-dashed border-white/15 text-xs text-dim">+ Fotoğraf</span></div>
+          </div>
+          <div class="mt-5 flex justify-end"><span class="btn-primary px-4 py-2 text-sm">Devam</span></div>
+        </div>
+      </div>
+
+      <!-- 1: preview on phone -->
+      <div role="tabpanel" id="pane-1" aria-labelledby="tab-1" class="tabpane relative" hidden>
+        <div class="flex items-center justify-center gap-6">
+          <div class="w-[230px] rounded-[34px] border border-white/15 bg-[#07051a] p-2.5 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.9)]">
+            <div class="overflow-hidden rounded-[26px] bg-[#F4F1EC] text-[#1d1a16]">
+              <div class="flex items-center justify-between px-4 pt-4 text-[10px]"><span class="font-semibold tracking-wide">USTA YAPI</span><span>☰</span></div>
+              <div class="px-4 pb-4 pt-6"><p class="text-[20px] font-semibold leading-tight">Nilüfer’de anahtar teslim daire tadilatı</p><p class="mt-2 text-[11px] text-[#6b645a]">15 yıllık usta kadro, yazılı fiyat, söz verilen tarihte teslim.</p><span class="mt-3 inline-block rounded-full bg-[#1d1a16] px-3 py-1.5 text-[10px] text-white">Ücretsiz keşif iste</span></div>
+              <div class="grid grid-cols-2 gap-1.5 px-4 pb-4"><span class="h-16 rounded-md bg-[#d9d0c3]"></span><span class="h-16 rounded-md bg-[#c9bca9]"></span></div>
+              <div class="flex gap-1.5 border-t border-black/10 p-3"><span class="grow rounded-full bg-[#1d1a16] py-2 text-center text-[10px] text-white">Hemen ara</span><span class="grow rounded-full bg-[#25D366] py-2 text-center text-[10px] text-white">WhatsApp</span></div>
+            </div>
+          </div>
+          <div class="hidden max-w-[220px] flex-col gap-3 sm:flex">
+            <div class="rounded-xl border border-white/10 bg-[#0D0A28] p-3.5 text-xs"><span class="text-muted">Önizleme bağlantısı</span><p class="mt-1 text-soft">onizleme.erdncbyrk.com/usta-yapi</p></div>
+            <div class="rounded-xl border border-white/10 bg-[#0D0A28] p-3.5 text-xs"><span class="text-muted">Mobil hız</span><p class="mt-1 text-lg text-lime">97</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2: revisions -->
+      <div role="tabpanel" id="pane-2" aria-labelledby="tab-2" class="tabpane relative" hidden>
+        <div class="mx-auto max-w-[480px] rounded-xl border border-white/10 bg-[#0D0A28] p-5 text-sm">
+          <div class="flex items-center justify-between"><span>Düzeltme listesi · 1. tur</span><span class="rounded-full bg-lime/10 px-2 py-0.5 text-xs text-lime">3 / 4 tamam</span></div>
+          <ul class="mt-4 grid gap-2">
+            <li class="flex items-start gap-3 rounded-lg bg-white/[0.03] p-3"><Icon name="check" size={16} class="mt-0.5 text-lime" /><span class="text-soft">Ana sayfadaki telefon numarası 0224 ile başlasın</span></li>
+            <li class="flex items-start gap-3 rounded-lg bg-white/[0.03] p-3"><Icon name="check" size={16} class="mt-0.5 text-lime" /><span class="text-soft">Mudanya’yı hizmet bölgelerine ekleyelim</span></li>
+            <li class="flex items-start gap-3 rounded-lg bg-white/[0.03] p-3"><Icon name="check" size={16} class="mt-0.5 text-lime" /><span class="text-soft">Mutfak projesi fotoğrafı ilk sırada olsun</span></li>
+            <li class="flex items-start gap-3 rounded-lg border border-violet/40 bg-violet/10 p-3"><span class="mt-1 size-3 shrink-0 rounded-full border-2 border-violet"></span><span class="text-soft">Hakkımızda metnine 2009’dan beri ifadesi eklenecek</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3: live -->
+      <div role="tabpanel" id="pane-3" aria-labelledby="tab-3" class="tabpane relative" hidden>
+        <div class="mx-auto grid max-w-[520px] gap-3 text-sm">
+          <div class="flex items-center justify-between rounded-xl border border-white/10 bg-[#0D0A28] p-4"><span class="flex items-center gap-3"><Icon name="globe" size={18} class="text-violet" />ustayapi.com.tr</span><span class="inline-flex items-center gap-1.5 rounded-full bg-lime/10 px-2 py-0.5 text-xs text-lime"><span class="size-1.5 rounded-full bg-lime"></span>Yayında</span></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl border border-white/10 bg-[#0D0A28] p-4"><span class="text-xs text-muted">Google İşletme Profili</span><p class="mt-1 text-soft">Doğrulandı, siteye bağlı</p></div>
+            <div class="rounded-xl border border-white/10 bg-[#0D0A28] p-4"><span class="text-xs text-muted">Teslim edilenler</span><p class="mt-1 text-soft">Giriş bilgileri, hız raporu</p></div>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-[#0D0A28] p-4"><span class="text-xs text-muted">Lighthouse · mobil</span><div class="mt-2 grid grid-cols-4 gap-2 text-center"><span><b class="num block text-xl font-normal text-lime">97</b><span class="text-[11px] text-dim">Performans</span></span><span><b class="num block text-xl font-normal text-lime">100</b><span class="text-[11px] text-dim">Erişilebilirlik</span></span><span><b class="num block text-xl font-normal text-lime">100</b><span class="text-[11px] text-dim">En iyi uyg.</span></span><span><b class="num block text-xl font-normal text-lime">100</b><span class="text-[11px] text-dim">SEO</span></span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-tabs]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panes = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DURATION = 6000;
+    let current = 0;
+    let timer: number | undefined;
+    let inView = false;
+
+    const select = (i: number, focus = false) => {
+      current = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, j) => {
+        const on = j === current;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        // restart the progress animation
+        const bar = t.querySelector<HTMLElement>('.tab-bar');
+        if (bar && on) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+      });
+      panes.forEach((p, j) => {
+        p.hidden = j !== current;
+        if (j === current && !reduce) p.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 500, easing: 'cubic-bezier(.2,.7,.2,1)' });
+      });
+      if (focus) tabs[current].focus();
+      schedule();
+    };
+    const schedule = () => {
+      window.clearTimeout(timer);
+      if (!reduce && inView && !root.classList.contains('paused')) timer = window.setTimeout(() => select(current + 1), DURATION);
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => { root.classList.add('paused'); select(i); });
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); root.classList.add('paused'); select(current + 1, true); }
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); root.classList.add('paused'); select(current - 1, true); }
+      });
+    });
+    root.style.setProperty('--tab-ms', `${DURATION}ms`);
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; if (inView) select(current); else window.clearTimeout(timer); }, { threshold: 0.35 }).observe(root);
+  }
+</script>

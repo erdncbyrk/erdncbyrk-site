@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+import { problems } from '../data/site';
+// Desktop positions for the fly-through cards (left %, start offset in vh, depth 0.8–1.1)
+const layout = [
+  { x: 8, y: 0, d: 1.0 },
+  { x: 70, y: 38, d: 0.9 },
+  { x: 14, y: 80, d: 0.86 },
+  { x: 66, y: 120, d: 1.05 },
+  { x: 5, y: 160, d: 0.95 },
+  { x: 72, y: 196, d: 0.88 },
+];
+---
+<section id="neden" class="relative scroll-mt-24">
+  <!-- Desktop: pinned headline, cards pass through -->
+  <div data-problems class="relative hidden h-[280vh]">
+    <div class="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+      <div class="relative z-0 flex max-w-[760px] flex-col items-center gap-6 px-4 text-center">
+        <span class="chip">Neden web sitesi</span>
+        <h2 class="text-[clamp(40px,5vw,68px)] leading-[1.05]">Müşteri sizi arıyor. Bulamıyor.</h2>
+        <p class="max-w-[560px] text-lg leading-relaxed text-muted">Bugün hizmet arayan herkes önce telefonuna bakıyor. Orada düzgün bir siteniz yoksa, telefon rakibinizde çalıyor.</p>
+      </div>
+      {problems.map((p, i) => (
+        <article data-card data-depth={layout[i].d} data-start={layout[i].y} class="glass absolute z-10 w-[300px] rounded-2xl p-5 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.9)]" style={`left:${layout[i].x}%; top:100%`}>
+          <span class="flex size-10 items-center justify-center rounded-full bg-violet/20 text-[#CFC7FF]"><Icon name={p.icon} size={18} /></span>
+          <h3 class="mt-4 text-[17px] font-medium tracking-tight">{p.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <!-- Mobile and reduced-motion: simple grid -->
+  <div data-problems-static class="mx-auto max-w-[1180px] px-4 py-24 md:py-40">
+    <div class="flex flex-col items-center gap-5 text-center">
+      <span class="chip">Neden web sitesi</span>
+      <h2 class="text-[clamp(38px,5vw,68px)] leading-[1.05]">Müşteri sizi arıyor. Bulamıyor.</h2>
+      <p class="text-base leading-relaxed text-muted">Bugün hizmet arayan herkes önce telefonuna bakıyor. Orada düzgün bir siteniz yoksa, telefon rakibinizde çalıyor.</p>
+    </div>
+    <div class="mt-10 grid gap-3 md:mt-16 md:grid-cols-3 md:gap-4">
+      {problems.map((p) => (
+        <article data-fade class="panel p-5">
+          <span class="flex size-10 items-center justify-center rounded-full bg-violet/20 text-[#CFC7FF]"><Icon name={p.icon} size={18} /></span>
+          <h3 class="mt-4 text-[17px] font-medium">{p.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{p.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

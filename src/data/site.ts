@@ -16,7 +16,34 @@ export const site = {
     'Bursa ve tüm Türkiye’deki küçük işletmeler için sabit fiyatlı, 7 günde yayında, hızlı ve mobil uyumlu web siteleri. Toplantı yok, pazarlık yok.',
 };
 
-export const sectors = ['Tadilat', 'Nakliye', 'Psikolog', 'Diş kliniği', 'Avukat', 'Kafe', 'Oto servis', 'Güzellik salonu', 'Veteriner', 'Mimarlık'];
+/** Pinned "neden" bölümünde derinlikten geçen kartlar */
+export const problems = [
+  { icon: 'search', title: 'Google’da çıkmıyorsunuz', text: '“Bursa tadilat” yazan müşteri rakibinizin sitesine gidiyor. Siz listede yoksunuz.' },
+  { icon: 'phone', title: 'Eski site telefonda açılmıyor', text: 'Ziyaretçilerin çoğu telefondan geliyor. Yavaş ve dağınık bir sayfa ilk 3 saniyede kaybettiriyor.' },
+  { icon: 'insta', title: 'Instagram sayfası yetmiyor', text: 'Fiyat, hizmet bölgesi, referans… Müşteri aradığını bulamayınca başka yere soruyor.' },
+  { icon: 'map', title: 'Haritada rakip önde', text: 'Google İşletme Profili eksik ya da siteye bağlı değil. Yol tarifi ve arama rakibe gidiyor.' },
+  { icon: 'clock', title: 'Siteyi yapan ulaşılamıyor', text: 'Küçük bir değişiklik için haftalarca beklemek. Şifreler, alan adı, hosting başkasının elinde.' },
+  { icon: 'tag', title: 'Fiyat belirsiz, süreç uzun', text: 'Ajanslarda toplantı, teklif, revizyon derken aylar geçiyor. Esnafın buna vakti yok.' },
+];
+
+/** Büyük rakamlar bölümü: hepsi sözleşmeye yazılan sözler, istatistik değil */
+export const numbers = [
+  { value: 7, suffix: ' gün', label: 'Formdan yayına', note: 'Bilgileriniz tamamlandıktan sonra' },
+  { value: 2, suffix: ' tur', label: 'Düzeltme dahil', note: 'Değişiklikler tek listede' },
+  { value: 95, suffix: '+', label: 'PageSpeed hedefi', note: 'Mobil ölçüm, teslimde raporla' },
+  { value: 0, suffix: '', label: 'Toplantı', note: 'Tüm süreç form ve mesajla' },
+];
+
+export const audiences = [
+  { icon: 'hammer', title: 'Tadilat ve inşaat' },
+  { icon: 'truck', title: 'Nakliye' },
+  { icon: 'heart', title: 'Psikolog ve danışman' },
+  { icon: 'tooth', title: 'Klinik ve sağlık' },
+  { icon: 'scale', title: 'Avukat ve mali müşavir' },
+  { icon: 'cup', title: 'Kafe ve restoran' },
+  { icon: 'wrench', title: 'Oto servis' },
+  { icon: 'scissors', title: 'Güzellik ve bakım' },
+];
 
 export type Plan = {
   name: string;
@@ -58,16 +85,16 @@ export const plans: Plan[] = [
     blurb: 'Site yayındayken güncel, güvenli ve hızlı kalsın.',
     price: '[FİYAT]',
     unit: 'TL + KDV / ay',
-    features: ['Ayda 2 içerik güncellemesi', 'Yedekleme ve güvenlik takibi', 'Barındırma yenilemesi dahil', 'Aylık hız ve ziyaret raporu'],
+    features: ['Ayda 2 içerik güncellemesi', 'Yedekleme ve güvenlik takibi', 'Barındırma yenilemesi dahil', 'Aylık ziyaret ve talep raporu'],
     cta: 'Bakım ekle',
   },
 ];
 
 export const steps = [
-  { day: 'GÜN 0', title: 'Sipariş formu', text: 'İşletme bilgileri, logo, fotoğraflar ve hizmetler tek formda.' },
-  { day: 'GÜN 3', title: 'Canlı önizleme', text: 'Çalışan sitenizin bağlantısı telefonunuza gelir.' },
-  { day: 'GÜN 4–6', title: 'Düzeltmeler', text: 'Değişiklikleri tek listede iletirsiniz. İki tur dahil.' },
-  { day: 'GÜN 7', title: 'Yayında', text: 'Alan adınızda açılır, hız raporu ve giriş bilgileri teslim edilir.' },
+  { day: 'Gün 0', title: 'Sipariş formunu doldurun', text: 'İşletme bilgileri, logo, fotoğraflar ve hizmetler tek formda. Yaklaşık 10 dakika.' },
+  { day: 'Gün 3', title: 'Canlı önizlemeyi açın', text: 'Çalışan sitenizin bağlantısı telefonunuza gelir. Gerçek cihazda, gerçek hızda görürsünüz.' },
+  { day: 'Gün 4–6', title: 'Düzeltmeleri iletin', text: 'Değişiklikleri tek listede yazarsınız. İki tur düzeltme pakete dahildir.' },
+  { day: 'Gün 7', title: 'Yayına alın', text: 'Site alan adınızda açılır. Hız raporu, giriş bilgileri ve Google kaydı size teslim edilir.' },
 ];
 
 export const faqs = [
