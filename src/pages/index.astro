@@ -8,14 +8,19 @@ import Packages from '../components/Packages.astro';
 import About from '../components/About.astro';
 import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
+import Splash from '../components/Splash.astro';
 ---
 <Base>
   <Nav />
   <main>
     <Hero />
+    <Splash from="#171717" to="#F6F6F8" />
     <Method />
+    <Splash from="#F6F6F8" to="#171717" />
     <Audit />
+    <Splash from="#171717" to="#F6F6F8" />
     <Packages />
+    <Splash from="#F6F6F8" to="#171717" />
     <About />
     <Faq />
   </main>

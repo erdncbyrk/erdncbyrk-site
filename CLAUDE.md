@@ -20,6 +20,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 - `src/layouts/Base.astro` — head, SEO meta, JSON-LD, `<head>` içinde `motion-on`/`motion-off` sınıfı, motion.ts yüklemesi.
 - `src/components/` — Nav (hap menü + sağda kaydırma yüzdesi), Hero (küre + bilgi şeridi + sektör kayan yazısı), Method (parçacıklı giriş + yatay kayan 4 adım), Audit (sorun seç → çözüm yazılsın), Packages, About, Faq, Footer (CTA halkası + alt bilgi).
 - `src/scripts/motion.ts` data öznitelikleri: `data-globe`, `data-particles` (`data-variant="ring"`), `data-hero-line`, `data-scramble` (başlık harf karıştırma), `data-type` (yazılan satır), `data-fade`, `data-hscroll`/`-pin`/`-track`, `data-step-dot`, `data-progress`/`-bar`, `data-nav`, `data-fill-btn` + `data-fill` (imleçten dolan buton). `canvas[data-ripple]` (`src/scripts/ripple.ts`): bölümün noktalı zeminini çizer, boş yere tıklanınca su dalgası yayar.
+- Bölüm geçişleri: `src/components/Splash.astro` (`from`/`to` renkleri) + `src/scripts/splash.ts` — koyu/açık bölümler arasına mürekkep sıçraması kenarı ve damlacıklar çizer; kaydırdıkça kenar yukarı itilir. Yeni bölüm eklerken renk değişen her sınıra bir `<Splash>` koy.
 
 ## Tasarım kuralları
 - Koyu bölümler `coal #171717` + `paper #F0F0F8`; açık bölümler `snow #F6F6F8` + `coal`. Tek vurgu `pink #E4007C`, başlık sonundaki nokta `<span class="dot">.</span>`.

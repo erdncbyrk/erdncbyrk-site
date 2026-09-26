@@ -1,0 +1,9 @@
+---
+// Organic ink-splash edge between a dark and a light section (see src/scripts/splash.ts).
+const { from = '#171717', to = '#F6F6F8', height = 'h-[160px] md:h-[240px]' } = Astro.props;
+---
+<div data-splash data-to={to} class={`relative -my-px w-full overflow-hidden ${height}`} style={`background:${from}`} aria-hidden="true">
+  <canvas class="absolute inset-0 h-full w-full"></canvas>
+  <!-- without JS: a plain half-and-half band -->
+  <noscript><div class="absolute inset-x-0 bottom-0 h-1/2" style={`background:${to}`}></div></noscript>
+</div>

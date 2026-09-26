@@ -3,6 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { createGlobe } from './globe';
 import { initRipples } from './ripple';
+import { initSplashes } from './splash';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,6 +12,7 @@ const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
 initRipples(reduce);
+initSplashes(reduce);
 
 /* ---------- Nav state + scroll percentage (no motion involved) ---------- */
 const nav = document.querySelector<HTMLElement>('[data-nav]');
