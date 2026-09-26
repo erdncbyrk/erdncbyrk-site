@@ -25,7 +25,7 @@ const slerp = (a: Vec, b: Vec, s: number): Vec => {
 
 /**
  * Dotted-earth globe: land as lit dots, soft sphere body, bright rim,
- * orbit rings and animated arcs out of Bursa. Returns a draw(t) function.
+ * and animated arcs out of Bursa. Returns a draw(t) function.
  */
 export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null, mouse: Mouse) {
   const pts: Vec[] = [];
@@ -45,11 +45,6 @@ export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null
   fit();
   window.addEventListener('resize', fit);
 
-  const orbits = [
-    { tiltX: 1.2, tiltZ: 0.5, r: 1.22 },
-    { tiltX: 1.35, tiltZ: -0.35, r: 1.28 },
-    { tiltX: 0.95, tiltZ: 0.9, r: 1.12 },
-  ];
 
   // ---- rotation state: auto spin + drag with inertia + a little mouse parallax ----
   let yaw = -0.5, pitch = 0.42; // start with Türkiye facing us
@@ -133,28 +128,6 @@ export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null
     ctx.fillStyle = glow;
     ctx.beginPath(); ctx.arc(cx, cy, R * 1.3, 0, Math.PI * 2); ctx.fill();
 
-    // back half of the orbits
-    const drawOrbits = (front: boolean) => {
-      for (const o of orbits) {
-        const cX = Math.cos(o.tiltX), sX = Math.sin(o.tiltX), cZ = Math.cos(o.tiltZ), sZ = Math.sin(o.tiltZ);
-        ctx.beginPath();
-        let started = false;
-        for (let k = 0; k <= 160; k++) {
-          const a = (k / 160) * Math.PI * 2 + t * 0.00003;
-          let v: Vec = [Math.cos(a) * o.r, 0, Math.sin(a) * o.r];
-          v = [v[0], v[1] * cX - v[2] * sX, v[1] * sX + v[2] * cX];
-          v = [v[0] * cZ - v[1] * sZ, v[0] * sZ + v[1] * cZ, v[2]];
-          const isFront = v[2] > 0;
-          if (isFront !== front) { started = false; continue; }
-          const [x, y] = px(v);
-          if (!started) { ctx.moveTo(x, y); started = true; } else ctx.lineTo(x, y);
-        }
-        ctx.strokeStyle = front ? 'rgba(240,240,248,0.22)' : 'rgba(240,240,248,0.07)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-    };
-    drawOrbits(false);
 
     // sphere body
     const body = ctx.createRadialGradient(cx + R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
@@ -206,7 +179,6 @@ export function createGlobe(canvas: HTMLCanvasElement, label: HTMLElement | null
       ctx.stroke();
     });
 
-    drawOrbits(true);
 
     // Bursa marker + label
     if (b[2] > 0) {
