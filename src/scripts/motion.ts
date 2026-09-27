@@ -26,46 +26,28 @@ const onScroll = () => {
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-/* ---------- Header menu: a glow slides under the hovered link and rests on the section in view ---------- */
+/* ---------- Header menu: the link of the section in view stays lit ---------- */
 {
-  const menu = document.querySelector<HTMLElement>('[data-menu]');
-  const glow = document.querySelector<HTMLElement>('[data-menu-glow]');
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-menu-link]')];
-  if (menu && glow && links.length) {
-    let active: HTMLAnchorElement | null = null;
-    const moveTo = (el: HTMLElement | null, instant = false) => {
-      if (!el) { gsap.to(glow, { opacity: 0, duration: 0.25 }); return; }
-      gsap.to(glow, { x: el.offsetLeft, width: el.offsetWidth, opacity: 1, duration: instant || reduce ? 0 : 0.45, ease: 'power3.out' });
-    };
-    links.forEach((a) => {
-      a.addEventListener('pointerenter', () => moveTo(a));
-      a.addEventListener('focus', () => moveTo(a));
+  const sections = links.map((a) => document.querySelector<HTMLElement>(a.hash));
+  let active: HTMLAnchorElement | null = null;
+  const spy = () => {
+    const mid = window.innerHeight * 0.45;
+    let hit: HTMLAnchorElement | null = null;
+    sections.forEach((sec, i) => {
+      const r = sec?.getBoundingClientRect();
+      if (r && r.top <= mid && r.bottom > mid) hit = links[i];
     });
-    menu.addEventListener('pointerleave', () => moveTo(active));
-    menu.addEventListener('focusout', () => moveTo(active));
-
-    // scroll spy: the section crossing the middle of the screen is the active one
-    const setActive = (a: HTMLAnchorElement | null) => {
-      if (a === active) return;
-      links.forEach((l) => l.classList.toggle('is-active', l === a));
-      if (a) a.setAttribute('aria-current', 'true');
-      links.forEach((l) => l !== a && l.removeAttribute('aria-current'));
-      active = a;
-      // wait for the dot to open so the glow fits the wider link
-      if (!menu.matches(':hover')) setTimeout(() => moveTo(active), 60);
-    };
-    const sections = links.map((a) => document.querySelector<HTMLElement>(a.hash)).filter(Boolean) as HTMLElement[];
-    const spy = () => {
-      const mid = window.innerHeight * 0.45;
-      let hit: HTMLAnchorElement | null = null;
-      sections.forEach((sec, i) => {
-        const r = sec.getBoundingClientRect();
-        if (r.top <= mid && r.bottom > mid) hit = links[i];
-      });
-      setActive(hit);
-    };
+    if (hit === active) return;
+    active = hit;
+    links.forEach((l) => {
+      l.classList.toggle('is-active', l === hit);
+      if (l === hit) l.setAttribute('aria-current', 'true');
+      else l.removeAttribute('aria-current');
+    });
+  };
+  if (links.length) {
     window.addEventListener('scroll', spy, { passive: true });
-    window.addEventListener('resize', () => moveTo(active, true));
     spy();
   }
 }
