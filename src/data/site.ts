@@ -25,6 +25,58 @@ export const facts = [
   { value: 'Sabit', label: 'fiyat, sayfada yazar' },
 ];
 
+/**
+ * Google / Trustindex yorumları (hero altı kayan kartlar + bilgi şeridindeki puan rozeti).
+ * `ornek: true` olanlar SADECE `npm run dev` içinde "ÖRNEK" etiketiyle görünür; `npm run build` çıktısına girmez.
+ * Gerçek yorumu girerken metni müşterinin yazdığı gibi aynen yapıştırın ve `ornek` satırını silin.
+ * Puan rozeti de aynı kuralla çalışır: gerçek puanı yazıp `ornek: true` satırını silin.
+ */
+export type Review = { name: string; role: string; source: 'google' | 'trustindex'; stars: number; text: string; url?: string; ornek?: boolean };
+
+export const reviews = {
+  googleUrl: '', // Google İşletme Profili yorum bağlantısı
+  trustindexUrl: '', // Trustindex sayfası (varsa)
+  rating: { value: '5.0', ornek: true },
+  items: [
+    {
+      name: 'Örnek Müşteri 1',
+      role: 'Tadilat · Bursa',
+      source: 'google',
+      stars: 5,
+      text: 'ÖRNEK METİN — gerçek yorumla değiştirilecek. Formu doldurduk, bir hafta sonra site yayındaydı. Süreç boyunca her adımı yazılı olarak bildirdi, toplantıya gerek kalmadı.',
+      ornek: true,
+    },
+    {
+      name: 'Örnek Müşteri 2',
+      role: 'Psikolojik danışmanlık',
+      source: 'google',
+      stars: 5,
+      text: 'ÖRNEK METİN — gerçek yorumla değiştirilecek. Randevu talepleri artık doğrudan siteden geliyor. Fiyat baştan belliydi, sonradan ek ücret çıkmadı.',
+      ornek: true,
+    },
+    {
+      name: 'Örnek Müşteri 3',
+      role: 'Nakliye',
+      source: 'trustindex',
+      stars: 5,
+      text: 'ÖRNEK METİN — gerçek yorumla değiştirilecek. Telefonda hızlı açılan, sade bir site istedik; tam olarak bu teslim edildi. İki düzeltme turu da hızlıca yapıldı.',
+      ornek: true,
+    },
+    {
+      name: 'Örnek Müşteri 4',
+      role: 'Diş kliniği',
+      source: 'google',
+      stars: 5,
+      text: 'ÖRNEK METİN — gerçek yorumla değiştirilecek. Google’da artık kliniğimiz çıkıyor. Alan adı ve giriş bilgileri bize teslim edildi, her şey bizim adımıza kayıtlı.',
+      ornek: true,
+    },
+  ] as Review[],
+};
+
+/** Yayında gösterilecekler: dev ortamında hepsi, build'de yalnızca gerçek (ornek olmayan) yorumlar */
+export const visibleReviews = reviews.items.filter((r) => import.meta.env.DEV || !r.ornek);
+export const showRating = import.meta.env.DEV || !reviews.rating.ornek;
+
 export const sectors = ['Tadilat', 'Nakliye', 'Psikolog', 'Diş kliniği', 'Avukat', 'Mali müşavir', 'Kafe', 'Oto servis', 'Güzellik salonu', 'Veteriner', 'Mimarlık', 'Özel ders'];
 
 /** 7 günlük yöntem: yatay kayan adımlar */

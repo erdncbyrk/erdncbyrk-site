@@ -100,3 +100,21 @@ html:not(.motion-on) [data-splash] { display: none; }
 .menu-link:hover .menu-line, .menu-link:focus-visible .menu-line, .menu-link.is-active .menu-line { transform: scaleX(1); transform-origin: left; }
 .menu-link.is-active { color: var(--color-paper); }
 .menu-link:focus-visible { outline: none; color: var(--color-paper); }
+
+/* review cards (hero): glass cards on an endless, hover-paused track */
+.review-card { background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.025) 100%); }
+.review-quote { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.review-card.is-open .review-quote { -webkit-line-clamp: unset; }
+.motion-on .reviews-track { animation: marquee var(--dur, 60s) linear infinite; }
+.motion-on .reviews:hover .reviews-track, .motion-on .reviews:focus-within .reviews-track, .reviews.is-paused .reviews-track { animation-play-state: paused; }
+html:not(.motion-on) .reviews { overflow-x: auto; }
+
+/* rating badge: Google / Trustindex labels take turns */
+.rating-src > span { animation: rating-swap 8s ease-in-out infinite; }
+.rating-src > span + span { animation-delay: -4s; }
+@keyframes rating-swap { 0%, 42% { opacity: 1; } 50%, 92% { opacity: 0; } 100% { opacity: 1; } }
+.motion-off .rating-src > span { animation: none; }
+.motion-off .rating-src > span + span { display: none; }
+.star-twinkle { display: inline-block; animation: twinkle 2.6s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(.82) rotate(18deg); opacity: .7; } }
+.motion-off .star-twinkle { animation: none; }

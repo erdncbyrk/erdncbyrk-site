@@ -1,0 +1,61 @@
+---
+// Kayan Google / Trustindex yorum kartları (hero altı). Veri: src/data/site.ts → reviews.
+import { reviews, visibleReviews } from '../data/site';
+import GoogleG from './icons/GoogleG.astro';
+import TrustMark from './icons/TrustMark.astro';
+const items = visibleReviews;
+// enough copies for a seamless loop on wide screens
+const reps = items.length ? Math.max(2, Math.ceil(8 / items.length)) : 0;
+const loop = Array.from({ length: reps % 2 ? reps + 1 : reps }, () => items).flat();
+const initials = (n: string) => n.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toLocaleUpperCase('tr');
+---
+{items.length > 0 && (
+  <div data-hero-line data-reviews class="reviews relative mt-12 w-full overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]" aria-label="Müşteri yorumları">
+    <div class="reviews-track flex w-max items-start gap-4 px-2 py-2" style={`--dur:${loop.length * 9}s`}>
+      {loop.map((r, i) => {
+        const href = r.url || (r.source === 'google' ? reviews.googleUrl : reviews.trustindexUrl);
+        return (
+          <article aria-hidden={i >= items.length ? 'true' : undefined} class:list={['review-card relative flex min-h-[210px] w-[300px] shrink-0 flex-col rounded-[14px] border border-white/10 p-5 text-left backdrop-blur-xl md:w-[380px] md:p-6', r.ornek && 'border-dashed border-pink/50']}>
+            {r.ornek && <span class="absolute right-4 top-4 rounded-full border border-pink/60 px-2 py-0.5 text-[9px] uppercase tracking-[0.16em] text-pink">örnek</span>}
+            <div class="flex items-center gap-2">
+              {r.source === 'google' ? <GoogleG size={14} /> : <TrustMark size={14} />}
+              <p class="text-[10px] uppercase tracking-[0.16em] text-paper/45">{r.source === 'google' ? 'Google yorumu' : 'Trustindex'}</p>
+            </div>
+            <p class="mt-3 text-[13px] tracking-[2px] text-[#F5B90A]" aria-label={`5 üzerinden ${r.stars} yıldız`}>{'★'.repeat(r.stars)}<span class="text-paper/15">{'★'.repeat(5 - r.stars)}</span></p>
+            <p data-quote class="review-quote mt-3 text-[13px] font-light italic leading-relaxed text-paper/90">“{r.text}”</p>
+            <button type="button" data-more class="mt-2 self-start text-[10px] uppercase tracking-[0.16em] text-pink hover:text-paper" tabindex={i >= items.length ? -1 : undefined}>Devamını oku →</button>
+            <footer class="mt-auto flex items-center gap-2.5 border-t border-white/[0.06] pt-3">
+              <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white/10 text-[11px] font-bold text-paper/80" aria-hidden="true">{initials(r.name)}</span>
+              <span class="text-[11px] text-paper/60"><span class="text-paper/90">{r.name}</span> · {r.role}</span>
+              {href && <a href={href} target="_blank" rel="noopener" class="ml-auto text-[10px] uppercase tracking-[0.14em] text-paper/40 hover:text-paper" tabindex={i >= items.length ? -1 : undefined}>Kaynak ↗</a>}
+            </footer>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+)}
+
+<script>
+  // "Devamını oku": expand the clamped quote; hide the button when the text already fits
+  document.querySelectorAll<HTMLElement>('[data-reviews]').forEach((wrap) => {
+    const cards = [...wrap.querySelectorAll<HTMLElement>('.review-card')];
+    const sync = () =>
+      cards.forEach((c) => {
+        const q = c.querySelector<HTMLElement>('[data-quote]')!;
+        const b = c.querySelector<HTMLElement>('[data-more]')!;
+        if (c.classList.contains('is-open')) return;
+        b.hidden = q.scrollHeight <= q.clientHeight + 2;
+      });
+    cards.forEach((c) =>
+      c.querySelector('[data-more]')?.addEventListener('click', () => {
+        const open = c.classList.toggle('is-open');
+        c.querySelector<HTMLElement>('[data-more]')!.textContent = open ? 'Kapat ×' : 'Devamını oku →';
+        wrap.classList.toggle('is-paused', !!wrap.querySelector('.review-card.is-open'));
+      }),
+    );
+    sync();
+    window.addEventListener('resize', sync);
+    document.fonts?.ready.then(sync);
+  });
+</script>

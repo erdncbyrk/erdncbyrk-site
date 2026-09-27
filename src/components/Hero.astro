@@ -1,5 +1,8 @@
 ---
-import { site, facts, sectors } from '../data/site';
+import { site, facts, sectors, reviews, showRating } from '../data/site';
+import Reviews from './Reviews.astro';
+import GoogleG from './icons/GoogleG.astro';
+import TrustMark from './icons/TrustMark.astro';
 const row = [...sectors, ...sectors];
 ---
 <section class="dotgrid relative isolate overflow-hidden px-4 pb-16 pt-28 md:pt-24">
@@ -31,7 +34,19 @@ const row = [...sectors, ...sectors];
           <span class="text-[10px] uppercase tracking-[0.14em] text-paper/50">{f.label}</span>
         </div>
       ))}
+      {showRating && (
+        <a href={reviews.googleUrl || undefined} target={reviews.googleUrl ? '_blank' : undefined} rel="noopener" class="relative flex min-w-[45%] grow flex-col items-center gap-1 px-4 py-3 sm:min-w-0">
+          {reviews.rating.ornek && <span class="absolute -top-2 right-2 rounded-full border border-pink/60 bg-coal px-1.5 text-[8px] uppercase tracking-[0.16em] text-pink">örnek</span>}
+          <span class="flex items-center gap-1.5 font-display text-lg font-bold"><span class="star-twinkle text-[15px] text-[#F5B90A]" aria-hidden="true">★</span>{reviews.rating.value}</span>
+          <span class="rating-src relative inline-flex h-[14px] w-[92px] items-center justify-center text-[10px] tracking-[0.04em] text-paper/60">
+            <span class="absolute inset-0 inline-flex items-center justify-center gap-1.5"><GoogleG size={11} />Google</span>
+            <span class="absolute inset-0 inline-flex items-center justify-center gap-1.5 opacity-0"><TrustMark size={11} />Trustindex</span>
+          </span>
+        </a>
+      )}
     </div>
+
+    <Reviews />
   </div>
 
   <!-- sectors marquee -->
