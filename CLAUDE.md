@@ -13,6 +13,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 - `npm run dev` → http://localhost:4321
 - `npm run build` → `dist/`
 - `npm run preview`
+- `npm run dev:vpn` / `npm run preview:vpn` → tüm ağ arayüzlerinde dinler (WireGuard üzerinden `http://<PC-wg-IP>:4321`); Windows Güvenlik Duvarı'nda 4321 için gelen kuralı gerekir.
 
 ## Yapı
 - `src/data/site.ts` — TÜM içerik (bilgi şeridi, sektörler, yöntem adımları, teşhis soruları, paketler, SSS, iletişim). Metin değişiklikleri önce buradan.
