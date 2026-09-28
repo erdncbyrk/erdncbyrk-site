@@ -24,8 +24,8 @@ export const site = {
 export const facts = [
   { value: '2018', label: 'den beri teknik işlerde' },
   { value: '7 gün', label: 'formdan yayına' },
-  { value: '2 tur', label: 'düzeltme dahil' },
-  { value: 'Sabit', label: 'fiyat, sayfada yazar' },
+  { value: 'Sabit', label: 'fiyat garantisi' },
+  { value: '1 yıl', label: 'ücretsiz destek' },
 ];
 
 /**
@@ -112,7 +112,7 @@ export const frictions = [
   { q: 'Eski sitem telefonda bozuk', a: 'Önce telefon için tasarlanır. Mobil PageSpeed hedefi 95+, teslimde raporuyla.' },
   { q: 'Instagram yeter sanıyordum', a: 'Instagram vitrindir, site dükkândır. Fiyat, bölge, referans ve arama butonu tek sayfada.' },
   { q: 'Siteyi yapan kayboldu', a: 'Alan adı ve tüm şifreler sizin adınıza. Bakım paketiyle muhatabınız hep belli.' },
-  { q: 'Ajanslar çok pahalı', a: 'Fiyat sabit ve sayfada yazar. Toplantı yok, teklif turu yok, sürpriz fatura yok.' },
+  { q: 'Ajanslar çok pahalı', a: 'Fiyat sabit ve garantili; ne yazıyorsa onu ödersiniz. Teslimden sonra 1 yıl destek de fiyata dahil.' },
   { q: 'Hiç vaktim yok', a: '10 dakikalık form yeterli. Gerisini ben hallederim, 7 gün sonra yayındasınız.' },
 ];
 
@@ -132,7 +132,7 @@ export const plans: Plan[] = [
     blurb: 'Tek sayfada kim olduğunuz, ne yaptığınız, nasıl ulaşılacağı.',
     price: '[FİYAT]',
     unit: 'TL + KDV',
-    features: ['tek sayfa, 5 bölüm', 'arama ve WhatsApp butonu', 'alan adı ve 1 yıl barındırma', '2 tur düzeltme'],
+    features: ['tek sayfa, 5 bölüm', 'arama ve WhatsApp butonu', 'alan adı ve 1 yıl barındırma', '2 tur düzeltme', '1 yıl ücretsiz destek'],
     cta: 'Tanıtım ile başla',
   },
   {
@@ -140,7 +140,7 @@ export const plans: Plan[] = [
     blurb: 'Hizmetlerinizi tek tek anlatan, Google için kurulmuş site.',
     price: '[FİYAT]',
     unit: 'TL + KDV',
-    features: ['5 sayfaya kadar', 'teklif veya randevu formu', 'Google İşletme Profili kurulumu', 'SEO ve yapay zekâ aramaları için yapı', 'alan adı ve 1 yıl barındırma', '2 tur düzeltme'],
+    features: ['5 sayfaya kadar', 'teklif veya randevu formu', 'Google İşletme Profili kurulumu', 'SEO ve yapay zekâ aramaları için yapı', 'alan adı ve 1 yıl barındırma', '2 tur düzeltme', '1 yıl ücretsiz destek'],
     cta: 'İşletme ile başla',
     featured: true,
   },
@@ -156,6 +156,7 @@ export const plans: Plan[] = [
 
 export const faqs = [
   { q: 'Alan adı ve site kime ait olur?', a: 'Size. Alan adı sizin adınıza kaydedilir, tüm yönetim bilgileri teslimde verilir.' },
+  { q: '1 yıl ücretsiz destek neleri kapsar?', a: 'Site yayında kaldığı sürece çıkan hataların giderilmesi, alan adı, e-posta ve barındırma sorunları, telefonla ya da WhatsApp’tan sorularınız. İçerik değişiklikleri Bakım paketindedir.' },
   { q: 'Sonradan değişiklik isterseniz ne olur?', a: 'Bakım paketinde aylık güncellemeler dahildir. Paket yoksa her değişiklik önceden yazılı olarak fiyatlandırılır.' },
   { q: 'Fotoğraf ve metinleri kim hazırlar?', a: 'Siz formdan temel bilgileri verirsiniz, metinleri ben düzenlerim. Fotoğrafınız yoksa işinize uygun görseller seçilir.' },
   { q: 'Fatura kesiyor musunuz?', a: 'Evet. Tüm hizmetler şahıs şirketim üzerinden faturalandırılır.' },
