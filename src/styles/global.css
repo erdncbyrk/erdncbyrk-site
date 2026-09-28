@@ -107,7 +107,8 @@ html:not(.motion-on) [data-splash] { display: none; }
 .review-card.is-open .review-quote { -webkit-line-clamp: unset; }
 .motion-on .reviews-track { animation: marquee var(--dur, 60s) linear infinite; }
 .motion-on .reviews:hover .reviews-track, .motion-on .reviews:focus-within .reviews-track, .reviews.is-paused .reviews-track { animation-play-state: paused; }
-html:not(.motion-on) .reviews { overflow-x: auto; }
+html:not(.motion-on) .reviews { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.reviews::-webkit-scrollbar { display: none; }
 
 /* rating badge: Google / Trustindex labels take turns */
 .rating-src > span { animation: rating-swap 8s ease-in-out infinite; }
