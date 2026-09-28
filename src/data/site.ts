@@ -14,10 +14,10 @@ export const site = {
   projectUrl: '#',
   // Arama sonucu başlığı (~60 karakter): ana arama ifadesi başta, marka sonda
   title: 'Küçük İşletmelere Web Sitesi, 7 Günde · Bursa | Erdinç Bayrak',
-  slogan: 'Küçük işletmelere sabit fiyatlı web sitesi, 7 günde yayında.',
+  slogan: 'İşletmeniz Google’da bulunsun. 7 günde, sabit fiyatla.',
   // Arama sonucu açıklaması (~155 karakter)
   description:
-    'Bursa ve tüm Türkiye’de esnafa ve küçük işletmelere sabit fiyatlı web sitesi: 7 günde yayında, mobil uyumlu, Google’da bulunur. Toplantı yok, pazarlık yok.',
+    'Bursa’da küçük işletmelere web sitesi. Bir hafta içinde yayında, fiyatı baştan belli, telefonda hızlı açılır. Toplantı yok, pazarlık yok.',
 };
 
 /** Hero altındaki bilgi şeridi: hepsi gerçek, uydurma istatistik yok */
