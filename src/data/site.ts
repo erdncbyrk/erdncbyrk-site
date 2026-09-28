@@ -12,9 +12,12 @@ export const site = {
   github: 'https://github.com/erdncbyrk',
   cvUrl: '/cv.pdf',
   projectUrl: '#',
-  title: 'Erdinç Bayrak · Küçük işletmeler için web siteleri · Bursa',
+  // Arama sonucu başlığı (~60 karakter): ana arama ifadesi başta, marka sonda
+  title: 'Küçük İşletmelere Web Sitesi, 7 Günde · Bursa | Erdinç Bayrak',
+  slogan: 'Küçük işletmelere sabit fiyatlı web sitesi, 7 günde yayında.',
+  // Arama sonucu açıklaması (~155 karakter)
   description:
-    'Bursa ve tüm Türkiye’deki küçük işletmeler için sabit fiyatlı, 7 günde yayında, hızlı ve mobil uyumlu web siteleri. Toplantı yok, pazarlık yok.',
+    'Bursa ve tüm Türkiye’de esnafa ve küçük işletmelere sabit fiyatlı web sitesi: 7 günde yayında, mobil uyumlu, Google’da bulunur. Toplantı yok, pazarlık yok.',
 };
 
 /** Hero altındaki bilgi şeridi: hepsi gerçek, uydurma istatistik yok */
