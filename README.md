@@ -1,4 +1,4 @@
-# erdncbyrk.com
+# bayrakdijital.com.tr
 
 Küçük işletmeler için sabit fiyatlı web sitesi hizmetinin tanıtım sitesi. Astro + Tailwind CSS.
 
@@ -14,4 +14,4 @@ Proje yapısı, tasarım kuralları ve yapılacaklar listesi: `CLAUDE.md`.
 ## Yayın (Cloudflare Pages)
 1. Cloudflare Pages → Create project → bu GitHub deposunu bağla
 2. Framework preset: Astro · Build command: `npm run build` · Output: `dist`
-3. Custom domains → `erdncbyrk.com`
+3. Custom domains → `bayrakdijital.com.tr` (+ `www`); erdncbyrk.com → 301 yönlendirme

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://erdncbyrk.com/sitemap-index.xml
+Sitemap: https://bayrakdijital.com.tr/sitemap-index.xml

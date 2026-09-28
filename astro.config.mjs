@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://erdncbyrk.com',
+  site: 'https://bayrakdijital.com.tr',
   integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] },
 });

@@ -1,4 +1,6 @@
-# erdncbyrk.com — proje notları (Claude Code için)
+# bayrakdijital.com.tr — proje notları (Claude Code için)
+
+Alan adı: **bayrakdijital.com.tr** (`site.url`, `astro.config.mjs`, `public/robots.txt`). Eski erdncbyrk.com buraya 301 ile yönlendirilecek. Depo adı `erdncbyrk-site` olarak kaldı.
 
 Erdinç Bayrak'ın (Bursa) küçük işletmelere sabit fiyatlı web sitesi sattığı tek sayfalık vitrin sitesi.
 Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe. Ton: sade, net, premium.
@@ -39,7 +41,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 4. Sipariş formu: Tally veya benzeri bir form kur, bağlantısını `site.orderFormUrl`'e yaz.
 5. `/kvkk` sayfası (KVKK aydınlatma metni) oluştur.
 6. Gerçek Google/Trustindex yorumlarını ve puanı `site.ts → reviews` içine gir (`googleUrl` dahil).
-7. `site.whatsappUrl` içine gerçek numarayı yaz. Sektör demo siteleri (`tadilat-demo.erdncbyrk.com` vb.) hazır olunca ana sayfaya bir çalışmalar bölümü eklenecek.
+7. `site.whatsappUrl` içine gerçek numarayı yaz. Sektör demo siteleri (`tadilat-demo.bayrakdijital.com.tr` vb.) hazır olunca ana sayfaya bir çalışmalar bölümü eklenecek.
 8. OG görseli (`public/og.png`, 1200×630) ve `og:image` meta etiketi.
-9. Yayın: Cloudflare Pages (build: `npm run build`, çıktı: `dist`), erdncbyrk.com alan adını bağla.
+9. Yayın: Cloudflare Pages (build: `npm run build`, çıktı: `dist`). bayrakdijital.com.tr'yi Cloudflare'e ekle (kayıt firmasında nameserver'ları Cloudflare'inkilerle değiştir), Pages → Custom domains'e `bayrakdijital.com.tr` ve `www` ekle. erdncbyrk.com'u da Cloudflare'e alıp Redirect Rule ile 301 yönlendir. İstenirse bayrakdijital.com da alınıp yönlendirilsin.
 10. Yayından sonra PageSpeed Insights ile mobil 95+ doğrula.

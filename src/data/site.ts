@@ -2,7 +2,7 @@
 
 export const site = {
   name: 'Erdinç Bayrak',
-  url: 'https://erdncbyrk.com',
+  url: 'https://bayrakdijital.com.tr',
   city: 'Bursa',
   companyName: '[Şahıs şirketi unvanı]',
   email: '[e-posta adresiniz]',
