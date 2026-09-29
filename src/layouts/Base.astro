@@ -12,7 +12,8 @@ const jsonLd = {
   '@graph': [
     {
       '@type': 'ProfessionalService',
-      name: site.name,
+      name: site.brand,
+      alternateName: 'bayrakdijital',
       url: site.url,
       description: site.description,
       slogan: site.slogan,
@@ -41,6 +42,7 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#171717" />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.brand} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

@@ -2,7 +2,7 @@
 
 Alan adı: **bayrakdijital.com.tr** (`site.url`, `astro.config.mjs`, `public/robots.txt`). Eski erdncbyrk.com buraya 301 ile yönlendirilecek. Depo adı `erdncbyrk-site` olarak kaldı.
 
-Erdinç Bayrak'ın (Bursa) küçük işletmelere sabit fiyatlı web sitesi sattığı tek sayfalık vitrin sitesi.
+Marka: **Bayrak Dijital** (`site.brand`; logo `bayrak` + soluk `dijital` + pembe nokta, favicon "b"). Kurucu Erdinç Bayrak (`site.name`, Hakkımda bölümü kişisel kalır). Bursa'da küçük işletmelere sabit fiyatlı web sitesi satan tek sayfalık vitrin sitesi.
 Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe. Ton: sade, net, premium.
 
 ## Teknoloji

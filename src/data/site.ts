@@ -1,7 +1,8 @@
 // Tek yerden düzenlenen içerik. [KÖŞELİ PARANTEZ] içindekiler doldurulacak yer tutuculardır.
 
 export const site = {
-  name: 'Erdinç Bayrak',
+  brand: 'Bayrak Dijital',
+  name: 'Erdinç Bayrak', // kurucu
   url: 'https://bayrakdijital.com.tr',
   city: 'Bursa',
   companyName: '[Şahıs şirketi unvanı]',
@@ -13,7 +14,7 @@ export const site = {
   cvUrl: '/cv.pdf',
   projectUrl: '#',
   // Arama sonucu başlığı (~60 karakter): ana arama ifadesi başta, marka sonda
-  title: 'Küçük İşletmelere Web Sitesi, 7 Günde · Bursa | Erdinç Bayrak',
+  title: 'Küçük İşletmelere Web Sitesi, 7 Günde · Bursa | Bayrak Dijital',
   slogan: 'İşletmeniz Google’da bulunsun. 7 günde, sabit fiyatla.',
   // Arama sonucu açıklaması (~155 karakter)
   description:
