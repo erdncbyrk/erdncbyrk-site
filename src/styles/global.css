@@ -113,9 +113,16 @@ html:not(.motion-on) .reviews { overflow-x: auto; scrollbar-width: none; -webkit
 /* rating badge: Google / Trustindex labels take turns */
 .rating-src > span { animation: rating-swap 8s ease-in-out infinite; }
 .rating-src > span + span { animation-delay: -4s; }
-@keyframes rating-swap { 0%, 42% { opacity: 1; } 50%, 92% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes rating-swap { 0% { opacity: 0; } 3%, 47% { opacity: 1; } 50%, 100% { opacity: 0; } }
 .motion-off .rating-src > span { animation: none; }
 .motion-off .rating-src > span + span { display: none; }
 .star-twinkle { display: inline-block; animation: twinkle 2.6s ease-in-out infinite; }
 @keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); opacity: 1; } 50% { transform: scale(.82) rotate(18deg); opacity: .7; } }
 .motion-off .star-twinkle { animation: none; }
+
+/* facts bar: two light heads run round the border (12s a lap, half a lap apart) */
+.spark rect { width: calc(100% - 1px); height: calc(100% - 1px); }
+.spark-head { animation: spark-run 12s linear infinite; }
+.spark-mirror { animation-delay: -6s; }
+@keyframes spark-run { to { stroke-dashoffset: -100; } }
+.motion-off .spark { display: none; }
