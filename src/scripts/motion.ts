@@ -311,7 +311,7 @@ if (reduce) {
         ease: 'none',
         scrollTrigger: {
           trigger: clip,
-          start: 'top 25%',
+          start: 'top 40%', // ink shows up just before the next section reaches the screen
           // 1.5 screens of scroll; the last wipe ends where the page does
           end: (self: ScrollTrigger) => Math.min(ScrollTrigger.maxScroll(window), self.start + window.innerHeight * 1.5),
           scrub: 0.3,
