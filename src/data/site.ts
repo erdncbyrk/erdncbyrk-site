@@ -23,7 +23,7 @@ export const site = {
 
 /** Hero altındaki bilgi şeridi: hepsi gerçek, uydurma istatistik yok */
 export const facts = [
-  { value: '2018', label: 'den beri teknik işlerde' },
+  { value: '8+ yıl', label: 'deneyim' }, // 2018'den beri
   { value: '7 gün', label: 'formdan yayına' },
   { value: 'Sabit', label: 'fiyat garantisi' },
   { value: '1 yıl', label: 'ücretsiz destek' },

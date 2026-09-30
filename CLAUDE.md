@@ -28,7 +28,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 ## Tasarım kuralları
 - Koyu bölümler `coal #171717` + `paper #F0F0F8`; açık bölümler `snow #F6F6F8` + `coal`. Tek vurgu `pink #E4007C`, başlık sonundaki nokta `<span class="dot">.</span>`.
 - Bölüm etiketleri `[ ETİKET ]` biçiminde `.label`. Başlıklar `.display` (Geist Mono 800, sıkı).
-- Uydurma istatistik, müşteri yorumu veya logo KULLANILMAZ. Sadece gerçek bilgiler (2018'den beri, 7 gün, sabit fiyat garantisi, 1 yıl ücretsiz destek — kapsamı SSS'de: hata giderme, alan adı/e-posta/barındırma sorunları, sorular; içerik değişikliği Bakım paketinde).
+- Uydurma istatistik, müşteri yorumu veya logo KULLANILMAZ. Sadece gerçek bilgiler (8+ yıl deneyim — 2018'den beri, 7 gün, sabit fiyat garantisi, 1 yıl ücretsiz destek — kapsamı SSS'de: hata giderme, alan adı/e-posta/barındırma sorunları, sorular; içerik değişikliği Bakım paketinde).
 - Yorumlar `site.ts → reviews`: `ornek: true` kayıtlar ve puan yalnızca `npm run dev`de "ÖRNEK" etiketiyle görünür, build çıktısına girmez. Gerçek yorum girilince metin aynen yapıştırılır ve `ornek` satırı silinir; bu korumayı kaldırma.
 - Animasyonlar `prefers-reduced-motion` ile kapanır: yatay kaydırma dikey listeye döner, canvas'lar tek kare çizilir. Bunu bozma.
 - Tailwind yardımcılarını ezmesi gereken kurallar `@layer` dışında yazılır.
