@@ -131,7 +131,7 @@ export const plans: Plan[] = [
   {
     name: 'Tanıtım',
     blurb: 'Tek sayfada kim olduğunuz, ne yaptığınız, nasıl ulaşılacağı.',
-    price: '[FİYAT]',
+    price: '7.500',
     unit: 'TL + KDV',
     features: ['tek sayfa, 5 bölüm', 'arama ve WhatsApp butonu', 'alan adı ve 1 yıl barındırma', '2 tur düzeltme', '1 yıl ücretsiz destek'],
     cta: 'Tanıtım ile başla',
@@ -139,7 +139,7 @@ export const plans: Plan[] = [
   {
     name: 'İşletme',
     blurb: 'Hizmetlerinizi tek tek anlatan, Google için kurulmuş site.',
-    price: '[FİYAT]',
+    price: '14.900',
     unit: 'TL + KDV',
     features: ['5 sayfaya kadar', 'teklif veya randevu formu', 'Google İşletme Profili kurulumu', 'SEO ve yapay zekâ aramaları için yapı', 'alan adı ve 1 yıl barındırma', '2 tur düzeltme', '1 yıl ücretsiz destek'],
     cta: 'İşletme ile başla',
@@ -148,7 +148,7 @@ export const plans: Plan[] = [
   {
     name: 'Bakım',
     blurb: 'Site yayındayken güncel, güvenli ve hızlı kalsın.',
-    price: '[FİYAT]',
+    price: '750',
     unit: 'TL + KDV / ay',
     features: ['ayda 2 içerik güncellemesi', 'yedekleme ve güvenlik takibi', 'barındırma yenilemesi dahil', 'aylık ziyaret ve talep raporu'],
     cta: 'Bakım ekle',

@@ -1,0 +1,8 @@
+---
+// Static ink edge (no scroll animation), for the last boundary where a moving
+// wipe would cover the call to action. Same #ink-edge filter as Splash.astro.
+const { from = '#F6F6F8', to = '#171717' } = Astro.props;
+---
+<div class="relative -my-px h-[140px] w-full overflow-hidden md:h-[200px]" style={`background:${from}`} aria-hidden="true">
+  <div class="absolute -inset-x-[300px] -bottom-[300px] top-[55%]" style={`background:${to};filter:url(#ink-edge)`}></div>
+</div>

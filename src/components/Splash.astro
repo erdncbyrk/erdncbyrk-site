@@ -1,11 +1,13 @@
 ---
-// Ink wipe into the next section. Zero-height marker placed between two sections;
-// its overlay covers the last screen of the section above, and as you scroll the
-// `to` colour floods up from the bottom through the #ink-edge SVG filter
-// (defined once in Base.astro). Driven by ScrollTrigger in motion.ts.
-const { to = '#F6F6F8' } = Astro.props;
+// Ink wipe into the next section. Placed between two sections: a spacer in the
+// colour of the section above (so its content has scrolled past before the ink
+// reaches it), then an overlay covering the last screen, where the `to` colour
+// floods up through the #ink-edge SVG filter (Base.astro). Driven by motion.ts.
+// Without motion the whole thing is hidden and sections meet edge to edge.
+const { from = '#171717', to = '#F6F6F8' } = Astro.props;
 ---
-<div data-splash class="relative h-0 w-full" aria-hidden="true">
+<div data-splash class="relative w-full" aria-hidden="true">
+  <div class="h-[30vh]" style={`background:${from}`}></div>
   <div data-splash-clip class="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-[100vh] overflow-hidden">
     <div class="absolute -inset-[300px] will-change-transform" style="filter:url(#ink-edge)">
       <div data-splash-fill class="absolute inset-0 will-change-transform" style={`background:${to};transform-origin:50% 100%;transform:scale(1,0)`}></div>

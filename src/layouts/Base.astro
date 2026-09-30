@@ -2,7 +2,7 @@
 import '@fontsource-variable/jetbrains-mono';
 import '@fontsource-variable/geist-mono';
 import '../styles/global.css';
-import { site, faqs } from '../data/site';
+import { site, faqs, plans } from '../data/site';
 
 const { title = site.title, description = site.description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
@@ -22,6 +22,22 @@ const jsonLd = {
       areaServed: [{ '@type': 'City', name: 'Bursa' }, { '@type': 'Country', name: 'Türkiye' }],
       address: { '@type': 'PostalAddress', addressLocality: 'Bursa', addressCountry: 'TR' },
       founder: { '@type': 'Person', name: site.name },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Web sitesi paketleri',
+        itemListElement: plans.map((p) => ({
+          '@type': 'Offer',
+          name: p.name,
+          description: p.blurb,
+          priceSpecification: {
+            '@type': p.unit.includes('/ ay') ? 'UnitPriceSpecification' : 'PriceSpecification',
+            price: Number(p.price.replace(/\./g, '')),
+            priceCurrency: 'TRY',
+            valueAddedTaxIncluded: false,
+            ...(p.unit.includes('/ ay') ? { unitCode: 'MON' } : {}),
+          },
+        })),
+      },
       sameAs: [site.github],
     },
     {
