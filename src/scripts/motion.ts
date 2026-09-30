@@ -111,69 +111,107 @@ if (globe) {
   loops.push({ draw, canvas: globe });
 }
 
-/* ---------- Particle clouds (light sections) ---------- */
+/* ---------- Particle clouds (light sections) ----------
+ * default: a wide, slowly turning dust vortex behind the heading. It gathers in
+ * from a loose scatter as the section scrolls in, and scrolling turns it faster.
+ * ring (CTA): a tilted ring of dust. */
 document.querySelectorAll<HTMLCanvasElement>('[data-particles]').forEach((c) => {
   let g = fit(c);
   const ring = c.dataset.variant === 'ring';
-  const N = window.innerWidth < 768 ? 500 : 1100;
-  type P = { bx: number; by: number; ph: number; sp: number; r: number; ox: number; oy: number };
+  const small = window.innerWidth < 768;
+  const N = ring ? (small ? 500 : 1100) : small ? 700 : 1600;
+  type P = { r: number; a: number; w: number; ph: number; sp: number; s: number; pink: boolean; scat: number; ox: number; oy: number; bx: number; by: number };
   let pts: P[] = [];
   const seed = () => {
     const { w, h } = g;
-    pts = Array.from({ length: N }, () => {
-      let bx: number, by: number;
+    pts = Array.from({ length: N }, (_, i) => {
+      const pink = i % 41 === 0;
       if (ring) {
         const a = Math.random() * Math.PI * 2;
         const rad = Math.min(w, h) * (0.42 + (Math.random() - 0.5) * 0.18) + Math.random() ** 3 * 120;
-        bx = w / 2 + Math.cos(a) * rad * 1.35;
-        by = h / 2 + Math.sin(a) * rad * 0.8;
-      } else {
-        // a diagonal drift of dust from the top-right, thinning toward the centre
-        const u = Math.random(), v = (Math.random() - 0.5) * 2;
-        bx = w * (0.98 - u * 0.62) + v * w * 0.08 * (1 - u);
-        by = h * (0.05 + u * 0.55) + v * h * 0.22 * (0.4 + u) + Math.sin(u * 6) * 30;
-        if (Math.random() < u * 0.55) { bx = -999; by = -999; } // thin out the tail
+        return { r: 0, a: 0, w: 0, ph: Math.random() * Math.PI * 2, sp: 0.4 + Math.random(), s: Math.random() < 0.9 ? 1.2 : 2, pink: false, scat: 0, ox: 0, oy: 0, bx: w / 2 + Math.cos(a) * rad * 1.35, by: h / 2 + Math.sin(a) * rad * 0.8 };
       }
-      return { bx, by, ph: Math.random() * Math.PI * 2, sp: 0.4 + Math.random(), r: Math.random() < 0.9 ? 1.2 : 2, ox: 0, oy: 0 };
+      // radius in units of half the width: sparse in the middle (heading), thick in a wide band, thin tail outward
+      // most dust in a band around r≈0.78 (gaussian), the rest scattered wider
+      const gauss = (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+      const r = Math.random() < 0.8 ? 0.78 + gauss * 0.3 : 0.35 + Math.random() * 1.0;
+      return {
+        r,
+        a: Math.random() * Math.PI * 2,
+        w: (0.9 + Math.random() * 0.5) / Math.pow(r, 1.4), // inner dust turns faster
+        ph: Math.random() * Math.PI * 2,
+        sp: 0.4 + Math.random(),
+        s: pink ? 2.4 : Math.random() < 0.88 ? 1.2 : 2,
+        pink,
+        scat: 0.6 + Math.random() * 1.4, // how far it starts from its orbit
+        ox: 0, oy: 0, bx: 0, by: 0,
+      };
     });
   };
   seed();
   window.addEventListener('resize', () => { g = fit(c); seed(); });
+
+  // scroll progress through the section: 0 as it enters, 1 once its top reaches the top of the screen
+  const host = c.parentElement!;
+  const progress = () => {
+    const r = host.getBoundingClientRect();
+    return Math.min(1, Math.max(0, (window.innerHeight - r.top) / (window.innerHeight + r.height * 0.25)));
+  };
+  let spin = 0, lastScroll = window.scrollY;
+
   const draw = (t: number) => {
     const { ctx, w, h } = g;
     ctx.clearRect(0, 0, w, h);
     const rect = c.getBoundingClientRect();
     const mx = mouse.x - rect.left, my = mouse.y - rect.top;
-    ctx.fillStyle = 'rgba(23,23,23,0.72)';
+
+    const q = reduce ? 1 : progress();
+    const gather = 1 - Math.pow(1 - q, 3); // ease-out
+    // scrolling adds a little extra turn, which then settles
+    const sy = window.scrollY;
+    spin += (sy - lastScroll) * 0.0009;
+    lastScroll = sy;
+    // centre the vortex on the text block, ellipse fills the whole box
+    const txt = host.querySelector<HTMLElement>(':scope > div');
+    const cy = txt ? txt.getBoundingClientRect().top - rect.top + txt.offsetHeight / 2 : h * 0.5;
+    const cx = w / 2, R = w / 2, flat = (h * 0.5) / R;
+    const time = reduce ? 0 : t * 0.00005;
+
     for (const p of pts) {
-      if (p.bx < -900) continue;
-      let x = p.bx + Math.sin(t * 0.0006 * p.sp + p.ph) * 10;
-      let y = p.by + Math.cos(t * 0.0005 * p.sp + p.ph) * 8;
+      let x: number, y: number;
       if (ring) {
+        x = p.bx + Math.sin(t * 0.0006 * p.sp + p.ph) * 10;
+        y = p.by + Math.cos(t * 0.0005 * p.sp + p.ph) * 8;
         const a = t * 0.00005;
-        const dx = x - w / 2, dy = y - h / 2;
-        x = w / 2 + dx * Math.cos(a) - dy * Math.sin(a) * 0.6;
+        const dx = x - cx, dy = y - h / 2;
+        x = cx + dx * Math.cos(a) - dy * Math.sin(a) * 0.6;
         y = h / 2 + dx * Math.sin(a) * 0.6 + dy * Math.cos(a);
+      } else {
+        const ang = p.a + (time + spin) * p.w;
+        const rr = p.r * (1 + (1 - gather) * p.scat) * R;
+        x = cx + Math.cos(ang) * rr + Math.sin(t * 0.0007 * p.sp + p.ph) * 6;
+        y = cy + Math.sin(ang) * rr * flat + Math.cos(t * 0.0006 * p.sp + p.ph) * 6;
+        if (x < -10 || x > w + 10 || y < -10 || y > h + 10) continue;
       }
       // push away from the cursor, then ease back
       const dx = x - mx, dy = y - my, d2 = dx * dx + dy * dy;
-      if (finePointer && d2 < 130 * 130) {
+      if (finePointer && d2 < 140 * 140) {
         const d = Math.sqrt(d2) || 1;
-        const f = (1 - d / 130) * 22;
+        const f = (1 - d / 140) * 26;
         p.ox += ((dx / d) * f - p.ox) * 0.2;
         p.oy += ((dy / d) * f - p.oy) * 0.2;
       } else {
         p.ox *= 0.92;
         p.oy *= 0.92;
       }
-      ctx.fillRect(x + p.ox, y + p.oy, p.r, p.r);
+      // fade dust that sits right behind the heading
+      const ndx = (x - cx) / R, ndy = (y - cy) / (R * flat);
+      const core = ring ? 1 : Math.min(1, Math.max(0.15, (Math.hypot(ndx, ndy) - 0.3) / 0.25));
+      ctx.globalAlpha = (ring ? 0.72 : 0.62) * core * (ring ? 1 : 0.35 + gather * 0.65);
+      ctx.fillStyle = p.pink ? '#E4007C' : '#171717';
+      ctx.fillRect(x + p.ox, y + p.oy, p.s, p.s);
     }
-    ctx.fillStyle = '#E4007C';
-    for (let i = 0; i < pts.length; i += 97) {
-      const p = pts[i];
-      if (p.bx < -900 || ring) continue;
-      ctx.fillRect(p.bx + p.ox + Math.sin(t * 0.0006 * p.sp + p.ph) * 10, p.by + p.oy + Math.cos(t * 0.0005 * p.sp + p.ph) * 8, 2.5, 2.5);
-    }
+    ctx.globalAlpha = 1;
   };
   io.observe(c);
   loops.push({ draw, canvas: c });
