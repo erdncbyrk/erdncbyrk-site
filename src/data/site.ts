@@ -5,8 +5,8 @@ export const site = {
   name: 'Erdinç Bayrak', // kurucu
   url: 'https://bayrakdijital.com.tr',
   city: 'Bursa',
-  companyName: '[Şahıs şirketi unvanı]',
-  email: '[e-posta adresiniz]',
+  companyName: '[Şahıs şirketi unvanı]', // resmî unvan: KVKK metni ve faturalar için (alt bilgide marka adı kullanılıyor)
+  email: 'info@bayrakdijital.com.tr',
   whatsappUrl: 'https://wa.me/90[telefon-numaraniz]',
   orderFormUrl: '#basla', // Sipariş formu hazır olunca (Tally, Google Forms vb.) buraya bağlantı gelecek
   linkedin: 'https://www.linkedin.com/in/[kullanici-adi]',

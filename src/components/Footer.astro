@@ -22,7 +22,7 @@ import Splash from './Splash.astro';
     <div class="flex flex-col gap-3">
       <span class="font-display text-lg font-extrabold text-paper">bayrak<span class="text-paper/55">dijital</span><span class="dot">.</span></span>
       <span>Küçük işletmeler için sabit fiyatlı web siteleri · {site.city}</span>
-      <span class="text-paper/80">{site.email}</span>
+      <a href={`mailto:${site.email}`} class="text-paper/80 transition-colors hover:text-paper">{site.email}</a>
     </div>
     <div class="grid grid-cols-2 gap-x-14 gap-y-2.5 uppercase tracking-[0.14em]">
       <a href="#yontem" class="hover:text-paper">Yöntem</a><a href={site.linkedin} class="hover:text-paper">LinkedIn</a>
@@ -32,6 +32,6 @@ import Splash from './Splash.astro';
     </div>
   </div>
   <div class="mx-auto mt-12 flex max-w-[1180px] justify-between border-t border-white/10 pt-6 text-[11px] uppercase tracking-[0.14em] text-paper/35">
-    <span>© {new Date().getFullYear()} {site.companyName}</span><span>faturalı hizmet</span>
+    <span>© {new Date().getFullYear()} {site.brand}. Tüm hakları saklıdır.</span><span>faturalı hizmet</span>
   </div>
 </footer>

@@ -35,7 +35,7 @@ Hedef kitle: tadilat, nakliye, psikolog, klinik gibi yerel esnaf. Dil: Türkçe.
 - Mobilde yatay kaydırma olmamalı (390px'de kontrol et).
 
 ## Yapılacaklar (sırayla)
-1. `src/data/site.ts` içindeki [KÖŞELİ PARANTEZ] yer tutucularını doldur: fiyatlar, şirket unvanı, e-posta, LinkedIn.
+1. `src/data/site.ts` içindeki [KÖŞELİ PARANTEZ] yer tutucularını doldur: fiyatlar, şirket unvanı (KVKK için), LinkedIn. E-posta: info@bayrakdijital.com.tr — alan adı tanımlanınca Cloudflare Email Routing ile Gmail'e yönlendir.
 2. Gerçek fotoğrafı `public/` altına ekle, `About.astro` içindeki yer tutucuyu `<img>` (Astro `<Image>`) ile değiştir.
 3. `public/cv.pdf` ekle.
 4. Sipariş formu: Tally veya benzeri bir form kur, bağlantısını `site.orderFormUrl`'e yaz.
