@@ -1,5 +1,5 @@
 ---
-import { site, facts, sectors, reviews, showRating } from '../data/site';
+import { facts, sectors, reviews, showRating } from '../data/site';
 import Reviews from './Reviews.astro';
 import GoogleG from './icons/GoogleG.astro';
 import TrustMark from './icons/TrustMark.astro';
@@ -22,13 +22,9 @@ const row = [...sectors, ...sectors];
     <p data-hero-line class="mt-7 max-w-[600px] text-sm leading-relaxed text-paper/70 md:text-[15px]">
       Müşterileriniz sizi aradığında karşılarına güven veren bir web sitesi çıksın. Bilgilerinizi gönderin, gerisini biz halledelim. Bir hafta içinde siteniz yayında; sabit fiyat garantisi ve 1 yıl ücretsiz destekle.
     </p>
-    <div data-hero-line class="mt-8 flex flex-wrap justify-center gap-3">
-      <a href={site.orderFormUrl} class="btn-pink">Sipariş ver <span aria-hidden="true">→</span></a>
-      <a href="#yontem" class="btn-line">Nasıl çalışır</a>
-    </div>
 
     <!-- facts bar -->
-    <div data-hero-line class="relative mt-12 w-full max-w-[820px]">
+    <div data-hero-line class="relative mt-10 w-full max-w-[820px]">
     <div class="flex w-full flex-wrap items-stretch justify-center divide-x divide-white/10 rounded-2xl border border-white/10 bg-coal-2/80 backdrop-blur">
       {facts.map((f) => (
         <div class="flex min-w-[45%] grow flex-col items-center gap-1 px-4 py-3 sm:min-w-0">
